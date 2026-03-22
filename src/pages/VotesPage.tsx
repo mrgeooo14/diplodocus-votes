@@ -1,6 +1,7 @@
 import { FilterBar } from '../components/filters/FilterBar';
 import { VoteMap } from '../components/map/VoteMap';
 import { VoteSummary } from '../components/dashboard/VoteSummary';
+import { ResolutionPicker } from '../components/resolution/ResolutionPicker';
 
 export function VotesPage() {
   return (
@@ -14,6 +15,7 @@ export function VotesPage() {
           <VoteSummary />
         </aside>
       </div>
+      <ResolutionPicker />
     </div>
   );
 }

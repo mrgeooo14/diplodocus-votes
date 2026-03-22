@@ -7,6 +7,8 @@ interface FilterStore extends FilterState {
   setYear: (year: number) => void;
   setResolutionId: (id: string | null) => void;
   setTopic: (topic: string | null) => void;
+  resolutionPickerOpen: boolean;
+  setResolutionPickerOpen: (open: boolean) => void;
 }
 
 export const useFilterStore = create<FilterStore>((set) => ({
@@ -15,9 +17,11 @@ export const useFilterStore = create<FilterStore>((set) => ({
   year: 2025,
   resolutionId: null,
   topic: null,
+  resolutionPickerOpen: false,
   setBody: (body) => set({ body }),
   setMode: (mode) => set({ mode }),
   setYear: (year) => set({ year }),
   setResolutionId: (resolutionId) => set({ resolutionId }),
   setTopic: (topic) => set({ topic }),
+  setResolutionPickerOpen: (resolutionPickerOpen) => set({ resolutionPickerOpen }),
 }));

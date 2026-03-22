@@ -11,7 +11,7 @@ const MODES: { value: FilterMode; label: string }[] = [
 ];
 
 export function FilterBar() {
-  const { mode, setMode } = useFilterStore();
+  const { mode, setMode, resolutionId, setResolutionPickerOpen } = useFilterStore();
 
   return (
     <header className="flex items-center gap-4 border-b border-[#30363d] bg-[#161b22] px-4 py-2">
@@ -27,7 +27,10 @@ export function FilterBar() {
         {MODES.map(m => (
           <button
             key={m.value}
-            onClick={() => setMode(m.value)}
+            onClick={() => {
+              setMode(m.value);
+              if (m.value === 'resolution') setResolutionPickerOpen(true);
+            }}
             className={`rounded px-3 py-1 text-xs font-medium transition-colors ${
               mode === m.value
                 ? 'bg-[#21262d] text-[#e6edf3]'
@@ -44,9 +47,12 @@ export function FilterBar() {
       {mode === 'year' && <YearSlider />}
       {mode === 'topic' && <TopicSelect />}
       {mode === 'resolution' && (
-        <span className="text-xs text-[#8b949e]">
-          Click a resolution in the panel to explore it
-        </span>
+        <button
+          onClick={() => setResolutionPickerOpen(true)}
+          className="text-xs text-[#58a6ff] hover:text-[#e6edf3] transition-colors"
+        >
+          {resolutionId ? `${resolutionId.replace(/_/g, '/')} ↗` : 'Browse resolutions…'}
+        </button>
       )}
     </header>
   );

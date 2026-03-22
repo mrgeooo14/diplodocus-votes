@@ -21,7 +21,7 @@ export function Header() {
             }`
           }
         >
-          UN Votes
+          How does the UN vote?
         </NavLink>
         <NavLink
           to="/about"
