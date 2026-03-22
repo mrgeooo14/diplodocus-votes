@@ -1,10 +1,11 @@
 import { NavLink } from 'react-router-dom';
+import { DiploLogo } from './DiploLogo';
 
 export function Header() {
   return (
-    <header className="flex items-center gap-6 border-b border-[#30363d] bg-[#161b22] px-5 py-3">
-      <NavLink to="/" className="flex items-center gap-2 no-underline">
-        <span className="text-2xl leading-none select-none">🦕</span>
+    <header className="flex items-center gap-6 border-b border-[#30363d] bg-[#161b22] px-5 py-2.5">
+      <NavLink to="/" className="flex items-center gap-2.5 no-underline">
+        <DiploLogo size={36} />
         <span className="text-base font-bold tracking-tight text-[#e6edf3]">DiploDocus</span>
       </NavLink>
 

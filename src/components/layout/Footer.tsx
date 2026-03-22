@@ -5,7 +5,6 @@ export function Footer() {
         <span>
           <span className="mr-1">🦕</span>
           <span className="font-semibold text-[#e6edf3]">DiploDocus</span>
-          {' '}— UN voting data explorer
         </span>
         <span>Data: UN Bibliographic Information System · 1992–2025</span>
       </div>

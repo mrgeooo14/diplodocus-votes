@@ -12,7 +12,7 @@ interface FilterStore extends FilterState {
 export const useFilterStore = create<FilterStore>((set) => ({
   body: 'GA',
   mode: 'year',
-  year: 2023,
+  year: 2025,
   resolutionId: null,
   topic: null,
   setBody: (body) => set({ body }),
