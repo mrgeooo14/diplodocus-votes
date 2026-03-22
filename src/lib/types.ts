@@ -36,6 +36,14 @@ export interface TopicsIndex {
 
 export type FilterMode = 'year' | 'resolution' | 'topic';
 
+export interface CountryVoteInfo {
+  vote?: VoteValue;
+  yes?: number;
+  no?: number;
+  abstain?: number;
+  total?: number;
+}
+
 export interface FilterState {
   body: Body;
   mode: FilterMode;

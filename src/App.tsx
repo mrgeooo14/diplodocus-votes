@@ -1,13 +1,18 @@
+import { FilterBar } from './components/filters/FilterBar';
+import { VoteMap } from './components/map/VoteMap';
+import { VoteSummary } from './components/dashboard/VoteSummary';
+
 function App() {
   return (
-    <div className="flex h-full w-full">
-      {/* Map placeholder */}
-      <div className="flex flex-1 items-center justify-center border border-[#30363d]">
-        <p className="text-[#8b949e] text-lg">Map coming soon</p>
-      </div>
-      {/* Dashboard placeholder */}
-      <div className="flex w-96 items-center justify-center border-l border-[#30363d]">
-        <p className="text-[#8b949e] text-lg">Dashboard coming soon</p>
+    <div className="flex h-full w-full flex-col">
+      <FilterBar />
+      <div className="flex flex-1 overflow-hidden">
+        <div className="flex-1 overflow-hidden">
+          <VoteMap />
+        </div>
+        <aside className="flex w-72 flex-col overflow-y-auto border-l border-[#30363d] bg-[#161b22]">
+          <VoteSummary />
+        </aside>
       </div>
     </div>
   );
