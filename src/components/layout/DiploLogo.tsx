@@ -2,128 +2,121 @@ interface Props {
   size?: number;
 }
 
+const D = '#0d1117'; // dark (background / fill-dark)
+const L = '#e6edf3'; // light (owl, ring)
+const CX = 120;
+const CY = 120;
+
 export function DiploLogo({ size = 28 }: Props) {
   return (
     <svg
       width={size}
       height={size}
-      viewBox="0 0 64 64"
+      viewBox="0 0 240 240"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       aria-label="DiploDocus"
     >
-      <defs>
-        <clipPath id="diplo-inner">
-          <circle cx="32" cy="32" r="26.5" />
-        </clipPath>
-        {/* Subtle radial glow on the medallion background */}
-        <radialGradient id="diplo-bg" cx="40%" cy="35%" r="60%">
-          <stop offset="0%" stopColor="#1a3060" />
-          <stop offset="100%" stopColor="#0b1628" />
-        </radialGradient>
-      </defs>
+      {/* ── BORDER RING ─────────────────────────────────────── */}
+      {/* Outer white ring fill */}
+      <circle cx={CX} cy={CY} r="118" fill={L} />
+      {/* 24 dark notches cut into the ring → Greek key suggestion */}
+      {Array.from({ length: 24 }, (_, i) => (
+        <rect
+          key={i}
+          x={CX - 2}
+          y={CY - 118}
+          width={4}
+          height={13}
+          fill={D}
+          transform={`rotate(${i * 15}, ${CX}, ${CY})`}
+        />
+      ))}
+      {/* Thin dark inner separator */}
+      <circle cx={CX} cy={CY} r="103" fill={D} />
+      {/* Thin white inner border line */}
+      <circle cx={CX} cy={CY} r="103" fill="none" stroke={L} strokeWidth="2" />
 
-      {/* Outer rim — darkest gold shadow */}
-      <circle cx="32" cy="32" r="32" fill="#6b4a0e" />
-      {/* Main gold ring */}
-      <circle cx="32" cy="32" r="30.5" fill="#c9963a" />
-      {/* Inner gold ring — lighter highlight */}
-      <circle cx="32" cy="32" r="29.5" fill="#e0b050" />
-      {/* Greek key suggestion — repeated dark dashes on the ring */}
-      <circle
-        cx="32" cy="32" r="29"
-        fill="none"
-        stroke="#7a5510"
-        strokeWidth="2.5"
-        strokeDasharray="3 1.8"
+      {/* ── OLIVE BRANCH (upper left) ───────────────────────── */}
+      <path d="M 56,116 Q 48,97 52,70" stroke={L} strokeWidth="2" strokeLinecap="round" />
+      <ellipse cx="44"  cy="100" rx="11" ry="4" fill={L} transform="rotate(-62 44 100)" />
+      <ellipse cx="51"  cy="83"  rx="11" ry="4" fill={L} transform="rotate(-42 51 83)"  />
+      <ellipse cx="55"  cy="68"  rx="10" ry="4" fill={L} transform="rotate(-22 55 68)"  />
+      <circle  cx="56"  cy="116" r="3.5"         fill={L} />
+
+      {/* ── OWL HEAD ────────────────────────────────────────── */}
+      <circle cx={CX} cy="84" r="38" fill={L} />
+
+      {/* Left eye — 5 concentric rings (tetradrachm style) */}
+      <circle cx="104" cy="78" r="16"  fill={D} />
+      <circle cx="104" cy="78" r="12"  fill={L} />
+      <circle cx="104" cy="78" r="8"   fill={D} />
+      <circle cx="104" cy="78" r="4.5" fill={L} />
+      <circle cx="104" cy="78" r="2"   fill={D} />
+
+      {/* Right eye */}
+      <circle cx="136" cy="78" r="16"  fill={D} />
+      <circle cx="136" cy="78" r="12"  fill={L} />
+      <circle cx="136" cy="78" r="8"   fill={D} />
+      <circle cx="136" cy="78" r="4.5" fill={L} />
+      <circle cx="136" cy="78" r="2"   fill={D} />
+
+      {/* Beak */}
+      <path d="M 114,93 L 120,103 L 126,93 Z" fill={D} />
+
+      {/* Ear tufts */}
+      <path d="M 93,48 L 100,63"  stroke={L} strokeWidth="5" strokeLinecap="round" />
+      <path d="M 147,48 L 140,63" stroke={L} strokeWidth="5" strokeLinecap="round" />
+
+      {/* ── OWL BODY ────────────────────────────────────────── */}
+      <path
+        d="M 82,114 Q 74,148 76,188 Q 120,199 164,188 Q 166,148 158,114 Q 120,106 82,114 Z"
+        fill={L}
       />
-      {/* Thin bright inner border of the gold ring */}
-      <circle cx="32" cy="32" r="27.5" fill="#c9963a" />
 
-      {/* Dark medallion background with subtle blue tint */}
-      <circle cx="32" cy="32" r="26.5" fill="url(#diplo-bg)" />
+      {/* Centre dividing line (left wing / right chest) */}
+      <path d={`M ${CX},114 L ${CX},189`} stroke={D} strokeWidth="1.8" />
 
-      {/* All owl art clipped to the medallion */}
-      <g clipPath="url(#diplo-inner)">
-        {/* Faint inner border ring */}
-        <circle
-          cx="32" cy="32" r="25.5"
-          fill="none"
-          stroke="#dde8f0"
-          strokeWidth="0.5"
-          opacity="0.18"
-        />
+      {/* Left-wing horizontal feather stripes */}
+      <path d="M 78,122 Q 100,119 120,120" stroke={D} strokeWidth="1.8" />
+      <path d="M 77,132 Q 99,129  120,130" stroke={D} strokeWidth="1.8" />
+      <path d="M 76,142 Q 99,139  120,140" stroke={D} strokeWidth="1.8" />
+      <path d="M 76,152 Q 99,149  120,150" stroke={D} strokeWidth="1.8" />
+      <path d="M 77,162 Q 100,159 120,160" stroke={D} strokeWidth="1.8" />
+      <path d="M 78,172 Q 101,169 120,170" stroke={D} strokeWidth="1.8" />
 
-        {/* ── Olive branch (top-left) ── */}
-        <path
-          d="M15.5 29 Q13.5 23 15.5 16"
-          stroke="#dde8f0" strokeWidth="1.1" strokeLinecap="round"
-        />
-        {/* Lower leaf */}
-        <ellipse
-          cx="12.8" cy="22"
-          rx="3" ry="1.3"
-          fill="#dde8f0"
-          transform="rotate(-50 12.8 22)"
-        />
-        {/* Upper leaf */}
-        <ellipse
-          cx="15.5" cy="16.5"
-          rx="3" ry="1.3"
-          fill="#dde8f0"
-          transform="rotate(-22 15.5 16.5)"
-        />
-        {/* Berry at base */}
-        <circle cx="15.5" cy="29" r="1" fill="#dde8f0" />
+      {/* Right-chest dot / spot pattern */}
+      <circle cx="132" cy="121" r="3"   fill={D} />
+      <circle cx="140" cy="126" r="3"   fill={D} />
+      <circle cx="130" cy="130" r="3"   fill={D} />
+      <circle cx="138" cy="136" r="3"   fill={D} />
+      <circle cx="147" cy="132" r="3"   fill={D} />
+      <circle cx="134" cy="141" r="3"   fill={D} />
+      <circle cx="143" cy="145" r="2.8" fill={D} />
+      <circle cx="150" cy="140" r="2.8" fill={D} />
+      <circle cx="137" cy="149" r="2.8" fill={D} />
+      <circle cx="145" cy="154" r="2.5" fill={D} />
+      <circle cx="152" cy="149" r="2.5" fill={D} />
 
-        {/* ── Owl body ── */}
-        <path
-          d="M22 52 Q18 42 20 31 Q32 27 44 31 Q46 42 42 52 Q32 57 22 52Z"
-          fill="#dde8f0"
-        />
+      {/* Tail feather base stripes */}
+      <path d="M 80,179 Q 120,175 160,179" stroke={D} strokeWidth="2"   />
+      <path d="M 80,185 Q 120,181 160,185" stroke={D} strokeWidth="1.5" />
 
-        {/* Horizontal feather stripes */}
-        <path d="M21 37.5 Q32 34.5 43 37.5" stroke="#0b1628" strokeWidth="1.3" />
-        <path d="M20 43.5 Q32 40.5 44 43.5" stroke="#0b1628" strokeWidth="1.3" />
-        <path d="M20.5 49.5 Q32 46.5 43.5 49.5" stroke="#0b1628" strokeWidth="1.3" />
+      {/* ── FEET ────────────────────────────────────────────── */}
+      {/* Left */}
+      <path d="M 92,188 L 79,201"  stroke={L} strokeWidth="3.5" strokeLinecap="round" />
+      <path d="M 92,188 L 91,204"  stroke={L} strokeWidth="3.5" strokeLinecap="round" />
+      <path d="M 92,188 L 105,199" stroke={L} strokeWidth="3.5" strokeLinecap="round" />
+      {/* Right */}
+      <path d="M 148,188 L 135,201" stroke={L} strokeWidth="3.5" strokeLinecap="round" />
+      <path d="M 148,188 L 149,204" stroke={L} strokeWidth="3.5" strokeLinecap="round" />
+      <path d="M 148,188 L 161,199" stroke={L} strokeWidth="3.5" strokeLinecap="round" />
 
-        {/* Dot pattern on right wing (archaic Greek owl detail) */}
-        <circle cx="40" cy="35" r="1" fill="#0b1628" opacity="0.6" />
-        <circle cx="40" cy="38.5" r="1" fill="#0b1628" opacity="0.6" />
-        <circle cx="41.5" cy="41.5" r="1" fill="#0b1628" opacity="0.6" />
-
-        {/* ── Owl head ── */}
-        <circle cx="32" cy="22" r="10.5" fill="#dde8f0" />
-
-        {/* Left eye — three concentric rings (Athenian tetradrachm style) */}
-        <circle cx="27" cy="20.5" r="5.2" fill="#0b1628" />
-        <circle cx="27" cy="20.5" r="3.5" fill="#dde8f0" />
-        <circle cx="27" cy="20.5" r="2"   fill="#0b1628" />
-        <circle cx="27" cy="20.5" r="0.9" fill="#dde8f0" />
-
-        {/* Right eye */}
-        <circle cx="37" cy="20.5" r="5.2" fill="#0b1628" />
-        <circle cx="37" cy="20.5" r="3.5" fill="#dde8f0" />
-        <circle cx="37" cy="20.5" r="2"   fill="#0b1628" />
-        <circle cx="37" cy="20.5" r="0.9" fill="#dde8f0" />
-
-        {/* Beak */}
-        <path d="M30 25.5 L32 29 L34 25.5Z" fill="#0b1628" />
-
-        {/* Ear tufts */}
-        <path d="M25 12.5 L27 17.5" stroke="#dde8f0" strokeWidth="2.5" strokeLinecap="round" />
-        <path d="M39 12.5 L37 17.5" stroke="#dde8f0" strokeWidth="2.5" strokeLinecap="round" />
-
-        {/* ── Talons ── */}
-        {/* Left foot */}
-        <path d="M26 52 L22.5 58" stroke="#dde8f0" strokeWidth="1.5" strokeLinecap="round" />
-        <path d="M26 52 L26.5 58.5" stroke="#dde8f0" strokeWidth="1.5" strokeLinecap="round" />
-        <path d="M26 52 L30 57.5" stroke="#dde8f0" strokeWidth="1.5" strokeLinecap="round" />
-        {/* Right foot */}
-        <path d="M38 52 L34 58" stroke="#dde8f0" strokeWidth="1.5" strokeLinecap="round" />
-        <path d="M38 52 L37.5 58.5" stroke="#dde8f0" strokeWidth="1.5" strokeLinecap="round" />
-        <path d="M38 52 L41.5 57.5" stroke="#dde8f0" strokeWidth="1.5" strokeLinecap="round" />
-      </g>
+      {/* Ground mound */}
+      <path
+        d="M 76,199 Q 120,193 164,199 Q 157,208 120,210 Q 83,208 76,199 Z"
+        fill={L}
+      />
     </svg>
   );
 }
