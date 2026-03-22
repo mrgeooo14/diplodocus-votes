@@ -60,8 +60,8 @@ export function useVoteData(): VoteDataResult {
         if (entry) {
           for (const [iso, stats] of Object.entries(entry.countries)) {
             const cast = stats.yes + stats.no + stats.abstain;
-            const rate = cast > 0 ? stats.yes / cast : 0;
-            colors[iso] = yesRateToColor(rate);
+            if (cast === 0) continue;
+            colors[iso] = yesRateToColor(stats.yes / cast);
             info[iso] = { ...stats };
           }
         }

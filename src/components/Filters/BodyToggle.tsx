@@ -2,8 +2,8 @@ import { useFilterStore } from '../../store/filterStore';
 import type { Body } from '../../lib/types';
 
 const OPTIONS: { value: Body; label: string; title: string }[] = [
-  { value: 'GA', label: 'General Assembly', title: 'GA' },
-  { value: 'SC', label: 'Security Council', title: 'SC' },
+  { value: 'GA', label: 'General Assembly', title: 'UNGA' },
+  { value: 'SC', label: 'Security Council', title: 'UNSC' },
 ];
 
 export function BodyToggle() {

@@ -57,7 +57,11 @@ export function VoteMap() {
       ...baseGeo,
       features: baseGeo.features.map(f => {
         const props = f.properties ?? {};
-        const iso3 = (props['ISO_A3'] as string | undefined) ?? (props['ADM0_A3'] as string | undefined) ?? '';
+        const rawIso = props['ISO_A3'] as string | undefined;
+        const iso3 =
+          rawIso && rawIso !== '-99'
+            ? rawIso
+            : ((props['ISO_A3_EH'] as string | undefined) ?? (props['ADM0_A3'] as string | undefined) ?? '');
         return {
           ...f,
           properties: {

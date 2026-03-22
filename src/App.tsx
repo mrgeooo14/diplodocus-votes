@@ -1,20 +1,23 @@
-import { FilterBar } from './components/filters/FilterBar';
-import { VoteMap } from './components/map/VoteMap';
-import { VoteSummary } from './components/dashboard/VoteSummary';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Header } from './components/layout/Header';
+import { Footer } from './components/layout/Footer';
+import { VotesPage } from './pages/VotesPage';
+import { AboutPage } from './pages/AboutPage';
 
 function App() {
   return (
-    <div className="flex h-full w-full flex-col">
-      <FilterBar />
-      <div className="flex flex-1 overflow-hidden">
-        <div className="flex-1 overflow-hidden">
-          <VoteMap />
-        </div>
-        <aside className="flex w-72 flex-col overflow-y-auto border-l border-[#30363d] bg-[#161b22]">
-          <VoteSummary />
-        </aside>
+    <BrowserRouter>
+      <div className="flex h-full flex-col">
+        <Header />
+        <main className="flex flex-1 flex-col overflow-hidden">
+          <Routes>
+            <Route path="/" element={<VotesPage />} />
+            <Route path="/about" element={<AboutPage />} />
+          </Routes>
+        </main>
+        <Footer />
       </div>
-    </div>
+    </BrowserRouter>
   );
 }
 
