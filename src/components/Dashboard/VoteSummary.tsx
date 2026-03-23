@@ -6,6 +6,9 @@ import { P5AlignmentPanel } from './P5AlignmentPanel';
 import { VetoDonutPanel } from './VetoDonutPanel';
 import { YearContext } from './YearContext';
 import { ResolutionContentPanel } from './ResolutionContentPanel';
+import { GroupAlignmentPanel } from './GroupAlignmentPanel';
+import { G20_MEMBERS, G20_LABELS, EU_MEMBERS, EU_LABELS } from '../../lib/groupAlignment';
+import { AllCountriesButton } from './AllCountriesButton';
 
 interface Bar {
   label: string;
@@ -109,8 +112,20 @@ export function VoteSummary() {
         <>
           <div className="mx-4 mt-4 border-t border-[#30363d]" />
           <P5AlignmentPanel />
-          <div className="mx-4 mt-4 border-t border-[#30363d]" />
+          <div className="mx-4 mt-2 border-t border-[#30363d]" />
+          <AllCountriesButton />
+          <div className="mx-4 border-t border-[#30363d]" />
           <VetoDonutPanel />
+        </>
+      )}
+      {body === 'GA' && (
+        <>
+          <div className="mx-4 mt-4 border-t border-[#30363d]" />
+          <GroupAlignmentPanel groupName="G20 Alignment" members={G20_MEMBERS} labels={G20_LABELS} />
+          <div className="mx-4 mt-2 border-t border-[#30363d]" />
+          <GroupAlignmentPanel groupName="EU Alignment" members={EU_MEMBERS} labels={EU_LABELS} />
+          <div className="mx-4 mt-2 border-t border-[#30363d]" />
+          <AllCountriesButton />
         </>
       )}
     </div>

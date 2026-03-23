@@ -32,7 +32,6 @@ const env = Object.fromEntries(
 const supabase = createClient(env.SUPABASE_URL, env.SUPABASE_SERVICE_KEY);
 
 const BATCH = 200;
-const EXCERPT_LEN = 500;
 
 function normalize(s) {
   return s.toLowerCase().replace(/[^\w\s]/g, '').replace(/\s+/g, ' ').trim();
@@ -165,7 +164,6 @@ async function processCorpus(filePath, orgId) {
     batch.push({
       resolution_id: id,
       full_text: fullText,
-      excerpt: fullText.slice(0, EXCERPT_LEN),
       doc_id: doc.doc_id ?? null,
     });
 

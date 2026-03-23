@@ -47,21 +47,15 @@ export function ResolutionContentPanel() {
         </div>
       )}
 
-      {/* Excerpt */}
       {loading ? (
         <p className="text-xs text-[#8b949e]">Loading text…</p>
-      ) : content?.excerpt ? (
-        <>
-          <p className="mb-3 text-xs italic leading-relaxed text-[#8b949e] line-clamp-6">
-            {content.excerpt}
-          </p>
-          <button
-            onClick={() => setModalOpen(true)}
-            className="text-xs text-[#58a6ff] transition-colors hover:text-[#79c0ff]"
-          >
-            View full resolution →
-          </button>
-        </>
+      ) : content?.fullText ? (
+        <button
+          onClick={() => setModalOpen(true)}
+          className="text-xs text-[#58a6ff] transition-colors hover:text-[#79c0ff]"
+        >
+          View full resolution →
+        </button>
       ) : (
         <p className="text-xs italic text-[#8b949e]">Text not available.</p>
       )}

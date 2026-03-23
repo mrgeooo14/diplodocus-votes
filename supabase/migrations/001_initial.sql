@@ -56,7 +56,6 @@ CREATE TABLE resolution_subjects (
 CREATE TABLE resolution_content (
   resolution_id TEXT PRIMARY KEY REFERENCES resolutions(id) ON DELETE CASCADE,
   full_text     TEXT,
-  excerpt       TEXT,   -- first 500 chars of full_text
   doc_id        TEXT    -- SHA256 from source corpus
 );
 

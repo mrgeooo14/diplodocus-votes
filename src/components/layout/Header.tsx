@@ -6,7 +6,12 @@ export function Header() {
     <header className="flex items-center gap-6 border-b border-[#30363d] bg-[#161b22] px-5 py-2.5">
       <NavLink to="/" className="flex items-center gap-2.5 no-underline">
         <DiploLogo size={36} />
-        <span className="text-base font-bold tracking-tight text-[#e6edf3]">DiploDocus</span>
+        <span className="text-base font-bold tracking-tight text-[#e6edf3]">
+          DiploDocus
+        </span>
+        <span className="hidden text-xs text-[#8b949e] sm:inline">
+          — Making Diplomacy Accessible
+        </span>
       </NavLink>
 
       <nav className="flex items-center gap-1 ml-auto">

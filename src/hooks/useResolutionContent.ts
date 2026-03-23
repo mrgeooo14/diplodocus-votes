@@ -3,7 +3,6 @@ import { getSupabase } from '../lib/supabase';
 import { useFilterStore } from '../store/filterStore';
 
 export interface ResolutionContent {
-  excerpt: string;
   fullText: string;
 }
 
@@ -31,7 +30,7 @@ export function useResolutionContent(): { content: ResolutionContent | null; loa
     if (!sb) { setLoading(false); return; }
 
     sb.from('resolution_content')
-      .select('excerpt, full_text')
+      .select('full_text')
       .eq('resolution_id', resolutionId)
       .single()
       .then(({ data, error }) => {
@@ -42,7 +41,6 @@ export function useResolutionContent(): { content: ResolutionContent | null; loa
           setContent(null);
         } else {
           const result: ResolutionContent = {
-            excerpt: data.excerpt ?? '',
             fullText: data.full_text ?? '',
           };
           cache.set(resolutionId, result);

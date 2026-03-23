@@ -1,4 +1,16 @@
 /** ISO 3166-1 alpha-3 → alpha-2 lookup for all UN member/observer states */
+const _regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
+
+export function iso3ToName(iso3: string): string {
+  const iso2 = ISO3_TO_ISO2[iso3];
+  if (!iso2) return iso3;
+  try {
+    return _regionNames.of(iso2.toUpperCase()) ?? iso3;
+  } catch {
+    return iso3;
+  }
+}
+
 export const ISO3_TO_ISO2: Record<string, string> = {
   AFG: 'af', ALB: 'al', DZA: 'dz', AND: 'ad', AGO: 'ao',
   ATG: 'ag', ARG: 'ar', ARM: 'am', AUS: 'au', AUT: 'at',

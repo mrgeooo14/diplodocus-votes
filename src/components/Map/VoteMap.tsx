@@ -6,8 +6,10 @@ import type { FeatureCollection } from 'geojson';
 import 'maplibre-gl/dist/maplibre-gl.css';
 
 import { useVoteData } from '../../hooks/useVoteData';
+import { useFilterStore } from '../../store/filterStore';
 import { CountryTooltip } from './CountryTooltip';
 import { MapLegend } from './MapLegend';
+import { MapModeBar } from './MapModeBar';
 import { NO_DATA_COLOR } from '../../lib/colors';
 
 const MAP_STYLE: StyleSpecification = {
@@ -41,7 +43,8 @@ interface HoverState {
 
 export function VoteMap() {
   const mapRef = useRef<MapRef>(null);
-  const { countryColors, countryVoteInfo, loading } = useVoteData();
+  const { countryColors, countryVoteInfo, comparisonStats, loading } = useVoteData();
+  const { body, mapColorMode, compareCountry } = useFilterStore();
   const [baseGeo, setBaseGeo] = useState<FeatureCollection | null>(null);
   const [hover, setHover] = useState<HoverState | null>(null);
 
@@ -120,14 +123,17 @@ export function VoteMap() {
         )}
       </Map>
 
+      {body === 'GA' && <MapModeBar />}
       <MapLegend />
 
-      {hover && hover.iso3 && countryVoteInfo[hover.iso3] && (
+      {hover && hover.iso3 && (countryVoteInfo[hover.iso3] || comparisonStats?.[hover.iso3] || hover.iso3 === compareCountry) && (
         <CountryTooltip
           x={hover.x}
           y={hover.y}
           name={hover.name}
-          info={countryVoteInfo[hover.iso3]}
+          info={countryVoteInfo[hover.iso3] ?? {}}
+          comparisonStat={comparisonStats?.[hover.iso3] ?? null}
+          compareCountry={mapColorMode === 'country' ? compareCountry : null}
         />
       )}
 

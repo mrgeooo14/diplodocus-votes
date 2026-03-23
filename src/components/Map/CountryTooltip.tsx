@@ -1,4 +1,6 @@
 import type { CountryVoteInfo, VoteValue } from '../../lib/types';
+import type { ComparisonStat } from '../../hooks/useVoteData';
+import { iso3ToName } from '../../lib/countryIso';
 
 const VOTE_LABELS: Record<VoteValue, string> = {
   Y: 'Yes',
@@ -14,14 +16,20 @@ const VOTE_COLORS_CSS: Record<VoteValue, string> = {
   X: '#4b5563',
 };
 
+function pct(n: number) {
+  return `${Math.round(n * 100)}%`;
+}
+
 interface Props {
   x: number;
   y: number;
   name: string;
   info: CountryVoteInfo;
+  comparisonStat?: ComparisonStat | null;
+  compareCountry?: string | null;
 }
 
-export function CountryTooltip({ x, y, name, info }: Props) {
+export function CountryTooltip({ x, y, name, info, comparisonStat, compareCountry }: Props) {
   const total = info.total ?? 0;
 
   return (
@@ -31,7 +39,35 @@ export function CountryTooltip({ x, y, name, info }: Props) {
     >
       <p className="font-semibold text-[#e6edf3]">{name}</p>
 
-      {info.vote !== undefined ? (
+      {/* Comparison stats — shown instead of raw vote info when in a comparison mode */}
+      {comparisonStat?.kind === 'us-china' ? (
+        <div className="mt-1 space-y-0.5 text-xs">
+          <p>
+            <span style={{ color: '#38bdf8' }}>🇺🇸 US alignment:</span>{' '}
+            <span className="text-[#e6edf3]">{pct(comparisonStat.usAlign)}</span>
+          </p>
+          <p>
+            <span style={{ color: '#ef4444' }}>🇨🇳 China alignment:</span>{' '}
+            <span className="text-[#e6edf3]">{pct(comparisonStat.cnAlign)}</span>
+          </p>
+          <p className="text-[#8b949e]">
+            Neutral: {pct(comparisonStat.neutral)} &middot; {comparisonStat.total} votes
+          </p>
+        </div>
+      ) : comparisonStat?.kind === 'country' && compareCountry ? (
+        <div className="mt-1 space-y-0.5 text-xs">
+          <p>
+            <span style={{ color: '#06b6d4' }}>
+              Alignment with {iso3ToName(compareCountry)}:
+            </span>{' '}
+            <span className="text-[#e6edf3]">{pct(comparisonStat.align)}</span>
+          </p>
+          <p className="text-[#8b949e]">{comparisonStat.total} contested votes</p>
+        </div>
+      ) : compareCountry && !comparisonStat ? (
+        // This is the reference country itself
+        <p className="mt-0.5 text-xs" style={{ color: '#06b6d4' }}>Reference country</p>
+      ) : info.vote !== undefined ? (
         <p className="mt-0.5 font-medium" style={{ color: VOTE_COLORS_CSS[info.vote] }}>
           {VOTE_LABELS[info.vote]}
         </p>

@@ -36,6 +36,8 @@ export interface TopicsIndex {
 
 export type FilterMode = 'year' | 'resolution' | 'topic';
 
+export type MapColorMode = 'default' | 'us-china' | 'country';
+
 export interface CountryVoteInfo {
   vote?: VoteValue;
   yes?: number;

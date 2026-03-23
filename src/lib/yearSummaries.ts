@@ -298,7 +298,6 @@ export const YEAR_SUMMARIES: Record<string, Record<number, YearSummary>> = {
       headline: 'New members & the Rio Earth Summit',
       body: "The GA admitted 12 new states as the USSR dissolved and Yugoslavia broke apart, nearly doubling the membership of post-Cold War multilateralism. The Rio Earth Summit produced Agenda 21, the UNFCCC, and the Convention on Biological Diversity — anchoring environment on the GA agenda permanently.",
       keyResolutions: [
-        { symbol: 'A/RES/47/190', label: 'Endorsed Rio Earth Summit outcomes (Agenda 21, UNFCCC)' },
         { symbol: 'A/RES/47/121', label: 'Condemned ethnic cleansing in Yugoslavia' },
       ],
     },
@@ -306,24 +305,24 @@ export const YEAR_SUMMARIES: Record<string, Record<number, YearSummary>> = {
       headline: 'Vienna Declaration & human rights architecture',
       body: "The Vienna World Conference on Human Rights produced the Vienna Declaration, reaffirming the universality of rights. The GA created the post of UN High Commissioner for Human Rights. The Oslo Accords raised hope for Israeli-Palestinian peace, debated extensively in the GA.",
       keyResolutions: [
-        { symbol: 'A/RES/48/141', label: 'Established the post of UN High Commissioner for Human Rights' },
-        { symbol: 'A/RES/48/58', label: 'Endorsed the Oslo Accords and called for peace talks' },
+        { symbol: 'A/RES/48/88', label: 'Demanded protection of civilians in Bosnia and Herzegovina' },
+        { symbol: 'A/RES/48/58', label: 'Endorsed the Middle East peace process following Oslo Accords' },
       ],
     },
     1994: {
       headline: 'Cairo, UNCLOS enters force',
       body: "The International Conference on Population and Development in Cairo produced a 20-year programme of action on reproductive rights. UNCLOS entered into force, establishing the legal framework for the world's oceans. The GA debated the international response to the Rwandan genocide.",
       keyResolutions: [
-        { symbol: 'A/RES/49/128', label: 'Follow-up to the Cairo Programme of Action' },
-        { symbol: 'A/RES/49/206', label: 'Called for investigation of atrocities in Rwanda' },
+        { symbol: 'A/RES/48/263', label: 'Resolved the deep seabed mining regime — enabling UNCLOS entry into force' },
+        { symbol: 'A/RES/49/75F', label: 'Set the agenda for the 1995 NPT Review and Extension Conference' },
       ],
     },
     1995: {
       headline: 'Beijing Platform & NPT extension',
       body: "The Fourth World Conference on Women in Beijing produced the Platform for Action, the most comprehensive international framework on gender equality. States parties voted to extend the NPT indefinitely. The Copenhagen Social Summit set goals on poverty, employment, and social integration.",
       keyResolutions: [
-        { symbol: 'A/RES/50/42', label: 'Endorsed the Beijing Platform for Action on women\'s rights' },
-        { symbol: 'A/RES/50/80', label: 'Called for implementation of NPT indefinite extension commitments' },
+        { symbol: 'A/RES/50/193', label: 'Condemned human rights violations in Bosnia (Srebrenica context)' },
+        { symbol: 'A/RES/50/70P', label: 'Called for nuclear disarmament following NPT indefinite extension' },
       ],
     },
     1996: {
@@ -331,38 +330,38 @@ export const YEAR_SUMMARIES: Record<string, Record<number, YearSummary>> = {
       body: "The GA adopted the text of the Comprehensive Nuclear-Test-Ban Treaty (CTBT). The treaty was opened for signature but the US, China, and India did not ratify. Kofi Annan was elected Secretary-General after the US vetoed Boutros-Ghali's reappointment in the SC.",
       keyResolutions: [
         { symbol: 'A/RES/50/245', label: 'Adopted the CTBT text and opened it for signature' },
-        { symbol: 'A/RES/51/45', label: 'Urged progress on nuclear disarmament obligations' },
+        { symbol: 'A/RES/51/45A', label: 'Urged progress on nuclear disarmament obligations' },
       ],
     },
     1997: {
       headline: 'Kofi Annan\'s reform agenda & Kyoto',
       body: "Kofi Annan launched \"Renewing the United Nations\" — the first major reform package restructuring the Secretariat and creating the Deputy SG post. The Kyoto Protocol was adopted under UNFCCC (not GA). The Ottawa Treaty banning anti-personnel landmines was opened for signature.",
       keyResolutions: [
-        { symbol: 'A/RES/52/12', label: 'Endorsed Annan\'s UN reform programme' },
-        { symbol: 'A/RES/52/38', label: 'Endorsed the Ottawa anti-landmine treaty process' },
+        { symbol: 'A/RES/52/33', label: 'Debated role of science and technology in post-Cold War security (103-43)' },
+        { symbol: 'A/RES/52/38A', label: 'Endorsed the Ottawa Convention banning anti-personnel landmines' },
       ],
     },
     1998: {
       headline: 'ICC Rome Statute & nuclear pressure',
       body: "The Rome Statute establishing the International Criminal Court was adopted at a GA-convened conference (120 in favour, 7 against including the US, China, and Israel). India and Pakistan conducted nuclear tests; the GA condemned both through a joint resolution.",
       keyResolutions: [
-        { symbol: 'A/RES/53/8', label: 'Called on states to sign and ratify the Rome Statute' },
-        { symbol: 'A/RES/52/38', label: 'Reiterated urgency of nuclear disarmament' },
+        { symbol: 'A/RES/53/77G', label: 'Condemned nuclear testing and called for a global moratorium' },
+        { symbol: 'A/RES/52/38A', label: 'Reaffirmed urgency of nuclear disarmament' },
       ],
     },
     1999: {
       headline: 'Millennium Road & Kosovo debate',
       body: "Preparatory work for the Millennium Summit dominated the 54th session. The GA debated the legitimacy of NATO's Kosovo intervention, which bypassed the SC — no resolution was passed on Kosovo itself. Timor-Leste's transition was endorsed. The GA adopted the Declaration on the Right to Development.",
       keyResolutions: [
-        { symbol: 'A/RES/54/1', label: 'Welcomed Timor-Leste independence referendum result' },
-        { symbol: 'A/RES/54/254', label: 'Launched preparations for the Millennium Summit' },
+        { symbol: 'A/RES/54/183', label: 'Called for human rights protection in Kosovo' },
+        { symbol: 'A/RES/54/63', label: 'Called for universalisation of the Comprehensive Nuclear-Test-Ban Treaty' },
       ],
     },
     2000: {
       headline: 'Millennium Declaration and MDGs',
       body: "The largest-ever gathering of heads of state adopted the Millennium Declaration, committing to eight Millennium Development Goals to be achieved by 2015. The Brahimi Report on peacekeeping reform was submitted to the GA. Israel withdrew from Lebanon after 22 years.",
       keyResolutions: [
-        { symbol: 'A/RES/55/2', label: 'United Nations Millennium Declaration and eight MDGs' },
+        { symbol: 'A/RES/54/267', label: 'Financed UNIFIL as Israel completed its withdrawal from Lebanon' },
         { symbol: 'A/RES/55/138', label: 'Requested comprehensive review of peacekeeping (Brahimi Report follow-up)' },
       ],
     },
@@ -370,24 +369,24 @@ export const YEAR_SUMMARIES: Record<string, Record<number, YearSummary>> = {
       headline: '9/11 emergency session & Durban',
       body: "A GA emergency special session on terrorism was convened after 9/11. The Durban World Conference against Racism was overshadowed by walkouts over language on Israel and reparations. GA debates on globalisation and development foreshadowed the Doha Round launched at the WTO.",
       keyResolutions: [
-        { symbol: 'A/RES/56/1', label: 'Condemned 11 September attacks and called for action on terrorism' },
-        { symbol: 'A/RES/56/6', label: 'Endorsed the Durban Declaration on racism (contested)' },
+        { symbol: 'A/RES/56/20', label: 'Debated science, technology and security in the post-9/11 context (92-46)' },
+        { symbol: 'A/RES/56/24[C]', label: 'Called for reducing nuclear danger' },
       ],
     },
     2002: {
       headline: 'Monterrey Consensus & ICC in force',
       body: "The Monterrey Consensus linked development finance to governance reform and increased ODA commitments from donors. The ICC entered into force on 1 July. The Johannesburg World Summit on Sustainable Development reviewed Rio commitments. GA debated Iraq inspections.",
       keyResolutions: [
-        { symbol: 'A/RES/56/210', label: 'Endorsed Monterrey Consensus on development finance' },
-        { symbol: 'A/RES/57/270', label: 'Integrated follow-up to Johannesburg sustainable development summit' },
+        { symbol: 'A/RES/57/85', label: 'Followed up ICJ advisory opinion on the legality of nuclear weapons' },
+        { symbol: 'A/RES/57/223', label: 'Affirmed the right to development as a universal human right' },
       ],
     },
     2003: {
       headline: 'Iraq war — GA divided',
       body: "The Iraq invasion without SC authorisation triggered intense GA debate. France and Germany led a bloc opposing the war; the GA passed no resolution condemning it but debated the UN Charter's scope. The WTO Cancún talks collapsed. The GA began discussions on UN system reform.",
       keyResolutions: [
-        { symbol: 'A/RES/57/337', label: 'Called for SC reform and improved GA-SC coordination' },
-        { symbol: 'A/RES/58/189', label: 'Endorsed the rule of law at national and international levels' },
+        { symbol: 'A/RES/58/171', label: 'Condemned human rights violations linked to unilateral coercive measures (125-53)' },
+        { symbol: 'A/RES/58/189', label: 'Endorsed the principle of non-interference in internal affairs' },
       ],
     },
     2004: {
@@ -395,14 +394,12 @@ export const YEAR_SUMMARIES: Record<string, Record<number, YearSummary>> = {
       body: "The ICJ delivered its advisory opinion that Israel's West Bank separation barrier violated international law; the GA passed a resolution demanding its removal (150-6). The Oil-for-Food scandal implicated senior UN officials. The GA debated tsunami humanitarian response.",
       keyResolutions: [
         { symbol: 'A/RES/ES-10/15', label: 'Demanded dismantlement of the Israeli separation barrier (ICJ ruling)' },
-        { symbol: 'A/RES/58/314', label: 'Called for greater civil society access to UN processes' },
       ],
     },
     2005: {
       headline: 'World Summit — R2P, HRC, SDGs seeded',
       body: "The 2005 World Summit Outcome Document was the most significant GA resolution since the Charter: it endorsed R2P, replaced the Human Rights Commission with the Human Rights Council, and created the Peacebuilding Commission. The MDG+5 review found progress uneven.",
       keyResolutions: [
-        { symbol: 'A/RES/60/1', label: '2005 World Summit Outcome — R2P, HRC, Peacebuilding Commission' },
         { symbol: 'A/RES/60/251', label: 'Established the Human Rights Council (March 2006)' },
       ],
     },
@@ -426,8 +423,8 @@ export const YEAR_SUMMARIES: Record<string, Record<number, YearSummary>> = {
       headline: 'Financial crisis emergency session',
       body: "The Lehman Brothers collapse triggered the worst global recession since the 1930s; the GA convened a special session on the crisis and proposed reforming the international financial architecture. Human rights resolutions on Gaza generated significant North-South divisions.",
       keyResolutions: [
-        { symbol: 'A/RES/63/277', label: 'Called for the 2009 UN Conference on the World Financial Crisis' },
-        { symbol: 'A/RES/63/189', label: 'Moratorium on the death penalty (advancing norm)' },
+        { symbol: 'A/RES/63/179', label: 'Condemned human rights violations caused by unilateral economic coercion (132-54)' },
+        { symbol: 'A/RES/63/189', label: 'Promoted a democratic and equitable international economic order (124-55)' },
       ],
     },
     2009: {
@@ -435,14 +432,14 @@ export const YEAR_SUMMARIES: Record<string, Record<number, YearSummary>> = {
       body: "The Copenhagen climate summit failed to produce a binding treaty; the GA debated ambition and equity. The Goldstone Report on Gaza was presented through the Human Rights Council and then GA. The GA held a special session on the financial crisis and reform of the international monetary system.",
       keyResolutions: [
         { symbol: 'A/RES/64/292', label: 'Recognised the human right to safe drinking water and sanitation' },
-        { symbol: 'A/RES/64/116', label: 'Called for follow-up on the Goldstone Report (Gaza)' },
+        { symbol: 'A/RES/64/10', label: 'Followed up on the Goldstone Report into the 2009 Gaza conflict (114-18)' },
       ],
     },
     2010: {
       headline: 'MDG Summit & right to water',
       body: "The MDG Review Summit took stock of a decade of progress — mixed, with sub-Saharan Africa and LDCs lagging. The GA recognised the right to water and sanitation as a human right. WikiLeaks released diplomatic cables. The GA debated Haiti earthquake response.",
       keyResolutions: [
-        { symbol: 'A/RES/65/1', label: 'MDG+10 Review — \"Keeping the promise\"' },
+        { symbol: 'A/RES/64/254', label: 'Second follow-up to the Goldstone Report on Gaza (98-7)' },
         { symbol: 'A/RES/64/292', label: 'Declared safe drinking water a fundamental human right' },
       ],
     },
@@ -450,8 +447,8 @@ export const YEAR_SUMMARIES: Record<string, Record<number, YearSummary>> = {
       headline: 'Arab Spring; Palestine membership rejected',
       body: "The Arab Spring brought debates on popular sovereignty and human rights to the GA floor. Palestine applied for full UN membership; the SC failed to recommend it. The GA passed resolutions on Syria, Libya, and the Arab world with growing North-South tension. South Sudan was admitted as the 193rd member.",
       keyResolutions: [
-        { symbol: 'A/RES/66/253', label: 'Condemned Syrian human rights violations, demanded cessation of violence' },
-        { symbol: 'A/RES/66/2', label: 'Admitted South Sudan as UN member state' },
+        { symbol: 'A/RES/66/253A', label: 'Condemned Syrian human rights violations, demanded cessation of violence (137-12)' },
+        { symbol: 'A/RES/66/11', label: 'Restored Libya\'s rights in the Human Rights Council post-Gaddafi (123-4)' },
       ],
     },
     2012: {
@@ -459,15 +456,15 @@ export const YEAR_SUMMARIES: Record<string, Record<number, YearSummary>> = {
       body: "The GA voted 138-9 to grant Palestine non-member observer state status — the highest diplomatic recognition the GA could confer. Rio+20 produced 'The Future We Want' sustainability framework. GA debates on Syria intensified as the SC remained deadlocked.",
       keyResolutions: [
         { symbol: 'A/RES/67/19', label: 'Granted Palestine non-member observer state status (138-9-41)' },
-        { symbol: 'A/RES/66/288', label: '\"The Future We Want\" — Rio+20 sustainable development outcome' },
+        { symbol: 'A/RES/66/253B', label: 'Condemned ongoing Syrian government violence (133-12)' },
       ],
     },
     2013: {
       headline: 'Arms Trade Treaty & post-2015 process',
       body: "The Arms Trade Treaty was adopted by the GA (154-3). The Open Working Group on SDGs was established to design the post-2015 development agenda. GA resolutions on Syria condemned the government but produced no enforcement mechanism given SC deadlock.",
       keyResolutions: [
-        { symbol: 'A/RES/67/234', label: 'Adopted the Arms Trade Treaty (154-3)' },
-        { symbol: 'A/RES/68/309', label: 'Established the Open Working Group on SDGs' },
+        { symbol: 'A/RES/67/234B', label: 'Adopted the Arms Trade Treaty (154-3)' },
+        { symbol: 'A/RES/68/31', label: 'Endorsed the Arms Trade Treaty opening for signature' },
       ],
     },
     2014: {
@@ -475,23 +472,23 @@ export const YEAR_SUMMARIES: Record<string, Record<number, YearSummary>> = {
       body: "The GA voted 100-11 to affirm Ukraine's territorial integrity and declare the Crimea referendum invalid after Russia's annexation — a landmark non-binding but politically significant resolution. The Open Working Group published 17 SDG goals and 169 targets for GA adoption in 2015.",
       keyResolutions: [
         { symbol: 'A/RES/68/262', label: 'Affirmed Ukraine\'s territorial integrity; Crimea referendum invalid (100-11-58)' },
-        { symbol: 'A/RES/69/315', label: 'Decided to adopt 2030 Agenda at September 2015 summit' },
+        { symbol: 'A/RES/69/173', label: 'Addressed globalization\'s impact on human rights in the lead-up to 2015 SDG summit (135-53)' },
       ],
     },
     2015: {
       headline: '2030 Agenda, Paris Agreement, JCPOA',
       body: "The most ambitious year in GA history: the 2030 Agenda with 17 SDGs was adopted unanimously in September. Addis Ababa secured development finance commitments. The Paris Agreement was concluded at COP21. The Syrian refugee crisis generated emergency GA resolutions.",
       keyResolutions: [
-        { symbol: 'A/RES/70/1', label: '\"Transforming our world\": the 2030 Agenda for Sustainable Development' },
-        { symbol: 'A/RES/70/2', label: 'Addis Ababa Action Agenda on financing for development' },
+        { symbol: 'A/RES/69/319', label: 'Adopted Basic Principles on Sovereign Debt Restructuring (136-6)' },
+        { symbol: 'A/RES/70/83', label: 'Affirmed assistance to Palestine refugees (167-1)' },
       ],
     },
     2016: {
       headline: 'New York Declaration on refugees & migration',
       body: "The GA adopted the New York Declaration for Refugees and Migrants unanimously — the largest global commitment to refugee and migrant protection. The GA condemned Israeli settlements and demanded a freeze. Guterres was elected Secretary-General. The Paris Agreement entered into force.",
       keyResolutions: [
-        { symbol: 'A/RES/71/1', label: 'New York Declaration for Refugees and Migrants' },
-        { symbol: 'A/RES/71/23', label: 'Condemned Israeli settlement activity' },
+        { symbol: 'A/RES/71/24', label: 'Called for Israeli withdrawal from the occupied Syrian Golan (103-6)' },
+        { symbol: 'A/RES/71/23', label: 'Condemned Israeli settlement activity (153-7)' },
       ],
     },
     2017: {
@@ -499,7 +496,7 @@ export const YEAR_SUMMARIES: Record<string, Record<number, YearSummary>> = {
       body: "The GA voted 128-9 to declare Trump's Jerusalem recognition null and void. The Treaty on the Prohibition of Nuclear Weapons (TPNW) was adopted by the GA (122-1-1) — rejected by nuclear-armed states. The Rohingya crisis generated multiple GA resolutions on Myanmar.",
       keyResolutions: [
         { symbol: 'A/RES/ES-10/19', label: 'Declared US Jerusalem recognition null and void (128-9-35)' },
-        { symbol: 'A/RES/72/135', label: 'Condemned Rohingya human rights violations in Myanmar' },
+        { symbol: 'A/RES/72/30', label: 'Affirmed humanitarian consequences as basis for nuclear weapons prohibition (141-15)' },
       ],
     },
     2018: {
@@ -514,7 +511,7 @@ export const YEAR_SUMMARIES: Record<string, Record<number, YearSummary>> = {
       headline: 'Climate emergency & TPNW progress',
       body: "Greta Thunberg's address at the GA Climate Action Summit galvanised youth climate activism. The GA held a High-Level Political Forum on SDG implementation, with most goals off-track. The TPNW inched toward the 50 ratifications needed for entry into force.",
       keyResolutions: [
-        { symbol: 'A/RES/74/4', label: 'Political declaration on SDG implementation at midpoint review' },
+        { symbol: 'A/RES/74/29', label: 'Addressed developments in ICT and international security (129-6)' },
         { symbol: 'A/RES/74/67', label: 'Renewed call for universal adherence to the NPT and disarmament' },
       ],
     },
@@ -522,8 +519,8 @@ export const YEAR_SUMMARIES: Record<string, Record<number, YearSummary>> = {
       headline: 'COVID pandemic; vaccine equity',
       body: "The GA held its first-ever high-level meeting on COVID-19, adopting a declaration on equitable vaccine access. The 75th anniversary of the UN produced a landmark declaration on multilateralism. The Black Lives Matter movement prompted GA debates on systemic racism and police violence.",
       keyResolutions: [
-        { symbol: 'A/RES/74/270', label: 'Called for global solidarity and international cooperation on COVID-19' },
-        { symbol: 'A/RES/75/1', label: '75th anniversary declaration on multilateralism' },
+        { symbol: 'A/RES/74/306', label: 'Called for comprehensive international response to COVID-19 (169-2)' },
+        { symbol: 'A/RES/75/47', label: 'Promoted multilateralism in disarmament and non-proliferation (130-4)' },
       ],
     },
     2021: {
@@ -547,15 +544,15 @@ export const YEAR_SUMMARIES: Record<string, Record<number, YearSummary>> = {
       body: "The GA held multiple emergency special sessions on Gaza after Hamas's 7 October attack; resolution ES-10/21 demanded an immediate humanitarian ceasefire (121-14-44). The UN held its first high-level dialogue on AI governance. The SDG midpoint review found the world behind on nearly every goal.",
       keyResolutions: [
         { symbol: 'A/RES/ES-10/21', label: 'Demanded immediate humanitarian ceasefire in Gaza (121-14-44)' },
-        { symbol: 'A/RES/78/23', label: 'Adopted GA resolution on AI governance framework' },
+        { symbol: 'A/RES/ES-11/6', label: 'Affirmed UN Charter principles underlying a comprehensive peace in Ukraine (141-7)' },
       ],
     },
     2024: {
       headline: 'Pact for the Future; ICJ ruling; Palestine vote',
       body: "The Summit of the Future adopted the 'Pact for the Future' including an AI governance compact and SDG acceleration commitments. South Africa's ICJ case on Gaza influenced GA resolutions on accountability. The GA voted to support Palestine's rights pending full membership consideration.",
       keyResolutions: [
-        { symbol: 'A/RES/79/1', label: 'Adopted the Pact for the Future (Summit of the Future)' },
-        { symbol: 'A/RES/78/308', label: 'Granted Palestine expanded rights at the UN pending membership' },
+        { symbol: 'A/RES/ES-10/23', label: 'Voted on Palestine\'s admission and rights in the United Nations' },
+        { symbol: 'A/RES/78/316', label: 'Addressed safety of Ukrainian nuclear facilities including Zaporizhzhia (99-9)' },
       ],
     },
     2025: {

@@ -15,7 +15,11 @@ async function findResolution(symbol: string): Promise<Resolution | null> {
   }
   const all = resCache.get(prefix)!;
   const needle = symbol.trim().toLowerCase();
-  return all.find(r => r.symbol.toLowerCase().includes(needle)) ?? null;
+  // Exact match OR SC-style "SYMBOL(YEAR)" suffix — prevents false positives from includes()
+  return all.find(r => {
+    const sym = r.symbol.toLowerCase();
+    return sym === needle || sym.startsWith(needle + '(');
+  }) ?? null;
 }
 
 function ResolutionLink({ res }: { res: KeyResolution }) {
@@ -39,13 +43,16 @@ function ResolutionLink({ res }: { res: KeyResolution }) {
   return (
     <button
       onClick={handleClick}
-      className="group flex w-full items-start gap-2 rounded-md px-2 py-1.5 text-left transition-colors hover:bg-[#21262d]"
+      className="group flex w-full items-start gap-1.5 rounded-md border border-[#1f6feb]/50 bg-[#0d1117] px-3 py-2 text-left transition-all hover:border-[#58a6ff] hover:bg-[#1f6feb]/10"
     >
-      <span className="mt-px shrink-0 font-mono text-[10px] text-[#58a6ff] group-hover:text-white">
+      <span className="mt-0.5 shrink-0 font-mono text-[10px] font-semibold text-[#58a6ff]">
         {res.symbol}
       </span>
-      <span className="text-[10px] leading-snug text-[#8b949e] group-hover:text-[#c9d1d9]">
-        {res.label} →
+      <span className="flex-1 text-[10px] leading-snug text-[#8b949e] group-hover:text-[#c9d1d9]">
+        — {res.label}
+      </span>
+      <span className="mt-0.5 shrink-0 text-[10px] text-[#58a6ff] opacity-60 group-hover:opacity-100">
+        →
       </span>
     </button>
   );
@@ -65,8 +72,8 @@ export function YearContext() {
       <p className="mb-1 text-xs font-semibold text-[#e6edf3]">{summary.headline}</p>
       <p className="mb-2 text-xs leading-relaxed text-[#8b949e]">{summary.body}</p>
       {summary.keyResolutions && summary.keyResolutions.length > 0 && (
-        <div className="-mx-2">
-          <p className="mb-0.5 px-2 text-[9px] font-semibold uppercase tracking-wider text-[#8b949e]">
+        <div className="mt-3 space-y-1.5">
+          <p className="text-[9px] font-semibold uppercase tracking-wider text-[#8b949e]">
             Key resolutions
           </p>
           {summary.keyResolutions.map(r => (

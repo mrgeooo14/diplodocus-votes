@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useVoteData } from '../../hooks/useVoteData';
 import { useFilterStore } from '../../store/filterStore';
 import {
@@ -7,6 +7,7 @@ import {
   type P5VotePosition,
 } from '../../lib/p5alignment';
 import { CountryFlag } from '../CountryFlag';
+import { AlignmentModal } from './AlignmentModal';
 
 const P5_LABELS: Record<string, string> = {
   USA: 'United States',
@@ -149,6 +150,7 @@ function ScatterAxis({ positions }: ScatterAxisProps) {
 export function P5AlignmentPanel() {
   const { countryVoteInfo, p5ResolutionVotes, loading } = useVoteData();
   const { mode } = useFilterStore();
+  const [modalOpen, setModalOpen] = useState(false);
 
   const result = useMemo(() => {
     if (mode === 'resolution') {
@@ -171,6 +173,21 @@ export function P5AlignmentPanel() {
         <AlignmentScore value={result.alignment} />
       </div>
       <ScatterAxis positions={result.positions} />
+      <button
+        onClick={() => setModalOpen(true)}
+        className="mt-2 text-xs text-[#8b949e] transition-colors hover:text-[#e6edf3]"
+      >
+        View full →
+      </button>
+      {modalOpen && (
+        <AlignmentModal
+          groupName="P5 Alignment"
+          alignment={result.alignment}
+          positions={result.positions}
+          labels={P5_LABELS}
+          onClose={() => setModalOpen(false)}
+        />
+      )}
     </div>
   );
 }
