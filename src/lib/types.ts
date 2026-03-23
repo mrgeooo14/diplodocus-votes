@@ -44,6 +44,21 @@ export interface CountryVoteInfo {
   total?: number;
 }
 
+export interface ScVeto {
+  id: number;
+  year: number;
+  'draft_res#': string;
+  agenda: string;
+  short_agenda: string;
+  url_for_record: string;
+  'url_for_res#': string;
+  china: number;
+  russian_federation_ussr: number;
+  france: number;
+  united_states: number;
+  united_kingdom: number;
+}
+
 export interface FilterState {
   body: Body;
   mode: FilterMode;

@@ -95,7 +95,7 @@ export function VoteMap() {
     id: 'country-hover',
     type: 'fill',
     source: 'countries',
-    filter: hover?.featureId != null ? ['==', ['id'], hover.featureId as number] : ['==', false, true],
+    filter: hover?.featureId != null ? ['==', ['id'], hover.featureId as number] : ['==', ['id'], -1],
     paint: { 'fill-color': '#ffffff', 'fill-opacity': 0.12 },
   };
 

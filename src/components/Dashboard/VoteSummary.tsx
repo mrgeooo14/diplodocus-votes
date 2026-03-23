@@ -2,6 +2,10 @@ import { useMemo } from 'react';
 import { useVoteData } from '../../hooks/useVoteData';
 import { useFilterStore } from '../../store/filterStore';
 import type { CountryVoteInfo } from '../../lib/types';
+import { P5AlignmentPanel } from './P5AlignmentPanel';
+import { VetoDonutPanel } from './VetoDonutPanel';
+import { YearContext } from './YearContext';
+import { ResolutionContentPanel } from './ResolutionContentPanel';
 
 interface Bar {
   label: string;
@@ -43,7 +47,7 @@ function buildBars(info: Record<string, CountryVoteInfo>, mode: string): Bar[] {
 
 export function VoteSummary() {
   const { countryVoteInfo, loading } = useVoteData();
-  const { mode } = useFilterStore();
+  const { mode, body, year, setMode } = useFilterStore();
 
   const bars = useMemo(() => buildBars(countryVoteInfo, mode), [countryVoteInfo, mode]);
   const maxCount = Math.max(...bars.map(b => b.count), 1);
@@ -53,29 +57,62 @@ export function VoteSummary() {
   }
 
   return (
-    <div className="px-4 pt-4">
-      <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-[#8b949e]">
-        {mode === 'resolution' ? 'Vote breakdown' : 'Yes-rate distribution'}
-      </p>
-      <div className="space-y-2">
-        {bars.map(bar => (
-          <div key={bar.label}>
-            <div className="mb-0.5 flex justify-between text-xs text-[#8b949e]">
-              <span>{bar.label}</span>
-              <span>{bar.count}</span>
-            </div>
-            <div className="h-2 w-full rounded-full bg-[#21262d]">
-              <div
-                className="h-2 rounded-full transition-all duration-500"
-                style={{
-                  width: `${(bar.count / maxCount) * 100}%`,
-                  backgroundColor: bar.color,
-                }}
-              />
-            </div>
+    <div className="pt-4">
+      {mode === 'year' && <YearContext />}
+      {mode === 'resolution' && (
+        <>
+          <div className="px-4 pt-4">
+            <button
+              onClick={() => setMode('year')}
+              className="mb-3 flex items-center gap-1.5 text-xs text-[#8b949e] transition-colors hover:text-[#e6edf3]"
+            >
+              ← {year} yearly averages
+            </button>
           </div>
-        ))}
+          <ResolutionContentPanel />
+          <div className="mx-4 border-t border-[#30363d]" />
+        </>
+      )}
+      <div className="px-4 pt-4">
+        {mode === 'topic' && (
+          <button
+            onClick={() => setMode('year')}
+            className="mb-3 flex items-center gap-1.5 text-xs text-[#8b949e] transition-colors hover:text-[#e6edf3]"
+          >
+            ← {year} yearly averages
+          </button>
+        )}
+        <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-[#8b949e]">
+          {mode === 'resolution' ? 'Vote breakdown' : 'Yes-rate distribution'}
+        </p>
+        <div className="space-y-2">
+          {bars.map(bar => (
+            <div key={bar.label}>
+              <div className="mb-0.5 flex justify-between text-xs text-[#8b949e]">
+                <span>{bar.label}</span>
+                <span>{bar.count}</span>
+              </div>
+              <div className="h-2 w-full rounded-full bg-[#21262d]">
+                <div
+                  className="h-2 rounded-full transition-all duration-500"
+                  style={{
+                    width: `${(bar.count / maxCount) * 100}%`,
+                    backgroundColor: bar.color,
+                  }}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
+      {body === 'SC' && (
+        <>
+          <div className="mx-4 mt-4 border-t border-[#30363d]" />
+          <P5AlignmentPanel />
+          <div className="mx-4 mt-4 border-t border-[#30363d]" />
+          <VetoDonutPanel />
+        </>
+      )}
     </div>
   );
 }

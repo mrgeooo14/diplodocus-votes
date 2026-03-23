@@ -34,6 +34,8 @@ function yesRateToColor(rate: number): string {
 export interface VoteDataResult {
   countryColors: Record<string, string>;
   countryVoteInfo: Record<string, CountryVoteInfo>;
+  /** Raw votes for the current resolution (only populated in resolution mode). */
+  p5ResolutionVotes: Record<string, VoteValue> | null;
   loading: boolean;
 }
 
@@ -42,6 +44,7 @@ export function useVoteData(): VoteDataResult {
   const [result, setResult] = useState<VoteDataResult>({
     countryColors: {},
     countryVoteInfo: {},
+    p5ResolutionVotes: null,
     loading: true,
   });
 
@@ -53,6 +56,7 @@ export function useVoteData(): VoteDataResult {
       const prefix = body === 'GA' ? 'ga' : 'sc';
       const colors: Record<string, string> = {};
       const info: Record<string, CountryVoteInfo> = {};
+      let p5ResolutionVotes: Record<string, VoteValue> | null = null;
 
       if (mode === 'year') {
         const yearly = await fetchJSON<YearlyAggregate[]>(`/data/aggregates/yearly-${prefix}.json`);
@@ -73,6 +77,7 @@ export function useVoteData(): VoteDataResult {
             colors[iso] = VOTE_COLORS[vote as VoteValue] ?? NO_DATA_COLOR;
             info[iso] = { vote: vote as VoteValue };
           }
+          p5ResolutionVotes = res.votes as Record<string, VoteValue>;
         }
       } else if (mode === 'topic' && topic) {
         const topicsIndex = await fetchJSON<TopicsIndex>('/data/aggregates/topics.json');
@@ -95,7 +100,7 @@ export function useVoteData(): VoteDataResult {
         }
       }
 
-      if (!cancelled) setResult({ countryColors: colors, countryVoteInfo: info, loading: false });
+      if (!cancelled) setResult({ countryColors: colors, countryVoteInfo: info, p5ResolutionVotes, loading: false });
     }
 
     compute().catch(console.error);

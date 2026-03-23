@@ -7,14 +7,20 @@ const OPTIONS: { value: Body; label: string; title: string }[] = [
 ];
 
 export function BodyToggle() {
-  const { body, setBody } = useFilterStore();
+  const { body, setBody, setMode, setYear } = useFilterStore();
+
+  function handleSelect(value: Body) {
+    setBody(value);
+    setMode('year');
+    setYear(2025);
+  }
 
   return (
     <div className="flex gap-0.5 rounded-md border border-[#30363d] p-0.5">
       {OPTIONS.map(opt => (
         <button
           key={opt.value}
-          onClick={() => setBody(opt.value)}
+          onClick={() => handleSelect(opt.value)}
           title={opt.label}
           className={`rounded px-3 py-1 text-xs font-medium transition-colors ${
             body === opt.value

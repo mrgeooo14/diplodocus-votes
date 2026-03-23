@@ -23,5 +23,8 @@ dist-ssr
 *.sln
 *.sw?
 
+# Environment / secrets
+scripts/.env
+
 # Claude Code internal
 .claude/

@@ -70,7 +70,6 @@ export function YearSlider() {
       <span className="min-w-[3rem] text-center text-sm font-semibold text-[#e6edf3]">
         {year}
       </span>
-      <span className="text-xs text-[#8b949e]">{MAX_YEAR}</span>
     </div>
   );
 }
