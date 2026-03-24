@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useFilterStore } from '../../store/filterStore';
-import type { Resolution } from '../../lib/types';
+import type { Resolution, TopicsIndex } from '../../lib/types';
 import { VetoList } from './VetoList';
 
 const cache = new Map<string, Resolution[]>();
@@ -38,15 +38,19 @@ function VoteBar({ yes, no, abs, nx }: { yes: number; no: number; abs: number; n
 type SortKey = 'symbol' | 'date' | 'controversy';
 
 export function ResolutionPicker() {
-  const { body, year, resolutionId, resolutionPickerOpen, setResolutionPickerOpen, setResolutionId, setResolutionMeta, setMode } =
+  const { body, year, resolutionId, resolutionPickerOpen, setResolutionPickerOpen, setResolutionId, setResolutionMeta, setMode, topicResIds, topic } =
     useFilterStore();
 
   const [allResolutions, setAllResolutions] = useState<Resolution[]>([]);
+  const [topicsIndex, setTopicsIndex] = useState<TopicsIndex>({});
   const [query, setQuery] = useState('');
   const [yearFilter, setYearFilter] = useState<number | null>(year);
   const [sortKey, setSortKey] = useState<SortKey>('date');
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc');
   const [showVetoed, setShowVetoed] = useState(false);
+  const [vetoSortDir, setVetoSortDir] = useState<'asc' | 'desc'>('desc');
+  // in-picker topic filter: null = no filter, string = topic key from topics.json
+  const [inPickerTopic, setInPickerTopic] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -56,9 +60,17 @@ export function ResolutionPicker() {
   }, [resolutionPickerOpen, body]);
 
   useEffect(() => {
+    if (Object.keys(topicsIndex).length === 0) {
+      fetch('/data/aggregates/topics.json').then(r => r.json()).then(setTopicsIndex).catch(console.error);
+    }
+  }, []);
+
+  useEffect(() => {
     if (resolutionPickerOpen) {
       setQuery('');
-      setYearFilter(year);
+      // if opened with a topic pre-filter (↗ button), show that topic and all years
+      setInPickerTopic(topicResIds && topic ? topic : null);
+      setYearFilter(topicResIds ? null : year);
       setShowVetoed(false);
       setTimeout(() => inputRef.current?.focus(), 50);
     }
@@ -71,7 +83,11 @@ export function ResolutionPicker() {
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    let base = allResolutions;
+    // apply in-picker topic filter (or store pre-filter if set)
+    const effectiveIds = inPickerTopic
+      ? (topicsIndex[inPickerTopic] ?? [])
+      : topicResIds ?? null;
+    let base = effectiveIds ? allResolutions.filter(r => effectiveIds.includes(r.id)) : allResolutions;
     if (yearFilter !== null) base = base.filter(r => r.year === yearFilter);
     if (q) base = base.filter(r =>
       r.title.toLowerCase().includes(q) ||
@@ -87,7 +103,7 @@ export function ResolutionPicker() {
           : (a.totalNo + a.totalAbstentions) - (b.totalNo + b.totalAbstentions);
       return sortDir === 'asc' ? cmp : -cmp;
     });
-  }, [allResolutions, query, yearFilter, sortKey, sortDir]);
+  }, [allResolutions, topicsIndex, inPickerTopic, topicResIds, query, yearFilter, sortKey, sortDir]);
 
   function toggleSort(key: SortKey) {
     if (sortKey === key) setSortDir(d => d === 'asc' ? 'desc' : 'asc');
@@ -127,9 +143,17 @@ export function ResolutionPicker() {
       >
         {/* Header */}
         <div className="flex items-center justify-between border-b border-[#30363d] px-5 py-3.5">
-          <span className="text-sm font-semibold text-[#e6edf3]">
-            {body === 'GA' ? 'UN General Assembly' : 'UN Security Council'} Resolutions
-          </span>
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-semibold text-[#e6edf3]">
+              {body === 'GA' ? 'UN General Assembly' : 'UN Security Council'} Resolutions
+            </span>
+            {inPickerTopic && (
+              <span className="flex items-center gap-1 rounded-full border border-[#388bfd] bg-[#1c2536] px-2 py-0.5 text-xs text-[#58a6ff]">
+                {inPickerTopic.includes(' / ') ? inPickerTopic.split(' / ')[1] : inPickerTopic}
+                <button onClick={() => { setInPickerTopic(null); setYearFilter(null); }} className="hover:text-white" aria-label="Clear topic filter">×</button>
+              </span>
+            )}
+          </div>
           <div className="flex items-center gap-3">
             {!showVetoed && <span className="text-xs text-[#8b949e]">{filtered.length} resolutions</span>}
             {closeBtn}
@@ -158,7 +182,7 @@ export function ResolutionPicker() {
               </button>
             )}
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <select
               value={yearFilter ?? ''}
               onChange={e => setYearFilter(e.target.value ? Number(e.target.value) : null)}
@@ -166,6 +190,31 @@ export function ResolutionPicker() {
             >
               <option value="">All years</option>
               {availableYears.map(y => <option key={y} value={y}>{y}</option>)}
+            </select>
+            <select
+              value={inPickerTopic ?? ''}
+              onChange={e => { setInPickerTopic(e.target.value || null); if (e.target.value) setYearFilter(null); }}
+              className="max-w-[200px] rounded border border-[#30363d] bg-[#21262d] px-2 py-1 text-xs text-[#e6edf3] outline-none hover:border-[#8b949e] cursor-pointer"
+            >
+              <option value="">All topics</option>
+              {Object.entries(
+                Object.keys(topicsIndex)
+                  .filter(k => k.includes(' / '))
+                  .reduce<Record<string, string[]>>((acc, k) => {
+                    const sep = k.indexOf(' / ');
+                    const l1 = k.slice(0, sep);
+                    const l2 = k.slice(sep + 3);
+                    if (!acc[l1]) acc[l1] = [];
+                    acc[l1].push(l2);
+                    return acc;
+                  }, {})
+              ).map(([l1, l2s]) => (
+                <optgroup key={l1} label={l1}>
+                  {l2s.sort().map(l2 => (
+                    <option key={l2} value={`${l1} / ${l2}`}>{l2}</option>
+                  ))}
+                </optgroup>
+              ))}
             </select>
             {!showVetoed && ([
               { label: 'Most Recent', key: 'date' as const, dir: 'desc' as const },
@@ -207,7 +256,9 @@ export function ResolutionPicker() {
           {showVetoed ? (<>
             <span>Draft #</span>
             <span>Topic</span>
-            <span>Date</span>
+            <button onClick={() => setVetoSortDir(d => d === 'asc' ? 'desc' : 'asc')} className="flex items-center gap-0.5 hover:text-[#e6edf3] text-left">
+              Date{vetoSortDir === 'desc' ? ' ↓' : ' ↑'}
+            </button>
             <span>Vetoed by</span>
           </>) : (<>
             <button onClick={() => toggleSort('symbol')} className="flex items-center gap-0.5 hover:text-[#e6edf3] text-left">
@@ -225,7 +276,7 @@ export function ResolutionPicker() {
 
         {/* List */}
         <div className="relative flex-1 overflow-y-auto">
-          {showVetoed && <VetoList query={query} yearFilter={yearFilter} />}
+          {showVetoed && <VetoList query={query} yearFilter={yearFilter} sortDir={vetoSortDir} topicFilter={inPickerTopic} />}
           {!showVetoed && filtered.length === 0 && (
             <div className="flex flex-col items-center pt-12 text-sm text-[#8b949e]">
               <p>{allResolutions.length === 0 ? 'Loading…' : 'No resolutions match your filters.'}</p>

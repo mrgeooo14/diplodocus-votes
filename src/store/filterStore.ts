@@ -11,6 +11,10 @@ interface FilterStore extends FilterState {
   setTopic: (topic: string | null) => void;
   resolutionPickerOpen: boolean;
   setResolutionPickerOpen: (open: boolean) => void;
+  topicPickerOpen: boolean;
+  setTopicPickerOpen: (open: boolean) => void;
+  topicResIds: string[] | null;
+  setTopicResIds: (ids: string[] | null) => void;
   mapColorMode: MapColorMode;
   compareCountry: string | null;
   setMapColorMode: (mode: MapColorMode) => void;
@@ -25,6 +29,8 @@ export const useFilterStore = create<FilterStore>((set) => ({
   resolutionMeta: null,
   topic: null,
   resolutionPickerOpen: false,
+  topicPickerOpen: false,
+  topicResIds: null,
   mapColorMode: 'default',
   compareCountry: null,
   setBody: (body) => set({ body }),
@@ -34,6 +40,8 @@ export const useFilterStore = create<FilterStore>((set) => ({
   setResolutionMeta: (resolutionMeta) => set({ resolutionMeta }),
   setTopic: (topic) => set({ topic }),
   setResolutionPickerOpen: (resolutionPickerOpen) => set({ resolutionPickerOpen }),
+  setTopicPickerOpen: (topicPickerOpen) => set({ topicPickerOpen }),
+  setTopicResIds: (topicResIds) => set({ topicResIds }),
   setMapColorMode: (mapColorMode) => set({ mapColorMode }),
   setCompareCountry: (compareCountry) => set({ compareCountry }),
 }));

@@ -182,8 +182,8 @@ export function useVoteData(): VoteDataResult {
           }
         }
         for (const [iso, stats] of Object.entries(accum)) {
-          const rate = stats.total > 0 ? stats.yes / stats.total : 0;
-          colors[iso] = yesRateToColor(rate);
+          if (stats.total === 0) continue; // only X-votes → treat as no data
+          colors[iso] = yesRateToColor(stats.yes / stats.total);
           info[iso] = stats;
         }
       }

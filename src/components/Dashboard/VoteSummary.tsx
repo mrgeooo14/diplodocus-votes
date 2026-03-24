@@ -9,6 +9,7 @@ import { ResolutionContentPanel } from './ResolutionContentPanel';
 import { GroupAlignmentPanel } from './GroupAlignmentPanel';
 import { G20_MEMBERS, G20_LABELS, EU_MEMBERS, EU_LABELS } from '../../lib/groupAlignment';
 import { AllCountriesButton } from './AllCountriesButton';
+import { DelphiPanel } from '../Delphi/DelphiPanel';
 
 interface Bar {
   label: string;
@@ -128,6 +129,7 @@ export function VoteSummary() {
           <AllCountriesButton />
         </>
       )}
+      <DelphiPanel />
     </div>
   );
 }

@@ -23,8 +23,13 @@ dist-ssr
 *.sln
 *.sw?
 
+# Environment files
+.env
+.env.*
+
 # Pipeline scripts (one-time data processing, not part of the site)
 scripts/
+scripts/.env
 reports/
 
 # Claude Code internal

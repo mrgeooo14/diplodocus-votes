@@ -25,16 +25,29 @@ const P5: { key: keyof ScVeto; label: string }[] = [
   { key: 'france', label: 'FR' },
 ];
 
+// Extract meaningful keywords from a topic label for agenda matching
+function topicKeywords(topic: string): string[] {
+  const l2 = topic.includes(' / ') ? topic.split(' / ')[1] : topic;
+  return l2
+    .split(/[\s&,/()]+/)
+    .map(w => w.toLowerCase())
+    .filter(w => w.length >= 4 && !['with','from','their','this','that','into'].includes(w));
+}
+
 interface Props {
   query: string;
   yearFilter: number | null;
+  sortDir?: 'asc' | 'desc';
+  topicFilter?: string | null;
 }
 
-export function VetoList({ query, yearFilter }: Props) {
+export function VetoList({ query, yearFilter, sortDir = 'desc', topicFilter = null }: Props) {
   const [vetoes, setVetoes] = useState<ScVeto[]>([]);
   const [pendingUrl, setPendingUrl] = useState<string | null>(null);
 
   useEffect(() => { loadVetoes().then(setVetoes).catch(console.error); }, []);
+
+  const keywords = useMemo(() => topicFilter ? topicKeywords(topicFilter) : [], [topicFilter]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -46,8 +59,14 @@ export function VetoList({ query, yearFilter }: Props) {
       v.agenda.toLowerCase().includes(q) ||
       String(v.year).includes(q),
     );
-    return [...base].sort((a, b) => b.date - a.date);
-  }, [vetoes, query, yearFilter]);
+    if (keywords.length > 0) {
+      base = base.filter(v => {
+        const text = (v.agenda + ' ' + v.short_agenda).toLowerCase();
+        return keywords.some(kw => text.includes(kw));
+      });
+    }
+    return [...base].sort((a, b) => sortDir === 'desc' ? b.date - a.date : a.date - b.date);
+  }, [vetoes, query, yearFilter, keywords, sortDir]);
 
   if (filtered.length === 0) {
     return (

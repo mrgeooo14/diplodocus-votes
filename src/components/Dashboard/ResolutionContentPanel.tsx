@@ -1,11 +1,32 @@
 import { useState } from 'react';
 import { useResolutionContent } from '../../hooks/useResolutionContent';
 import { useResolutionMeta } from '../../hooks/useResolutionMeta';
+import { useResolutionSignificance } from '../../hooks/useResolutionSignificance';
+import { DiploLogo } from '../layout/DiploLogo';
 import { ResolutionFullTextModal } from './ResolutionFullTextModal';
+
+function SignificanceBadge({ score }: { score: number }) {
+  const label = score >= 70 ? 'High' : score >= 40 ? 'Notable' : 'Routine';
+  const color = score >= 70 ? '#ef4444' : score >= 40 ? '#eab308' : '#8b949e';
+  return (
+    <div className="mb-2 flex items-center gap-1.5">
+      <DiploLogo size={14} />
+      <span className="text-[10px] text-[#8b949e]">Significance</span>
+      <div className="flex-1 h-1.5 rounded-full bg-[#21262d] overflow-hidden">
+        <div
+          className="h-1.5 rounded-full transition-all duration-500"
+          style={{ width: `${score}%`, backgroundColor: color }}
+        />
+      </div>
+      <span className="text-[10px] font-semibold" style={{ color }}>{label}</span>
+    </div>
+  );
+}
 
 export function ResolutionContentPanel() {
   const meta = useResolutionMeta();
   const { content, loading } = useResolutionContent();
+  const significance = useResolutionSignificance();
   const [modalOpen, setModalOpen] = useState(false);
 
   if (!meta) {
@@ -32,6 +53,9 @@ export function ResolutionContentPanel() {
       {/* Symbol + title */}
       <p className="mb-0.5 text-xs font-semibold text-[#58a6ff]">{meta.symbol}</p>
       <p className="mb-2 text-xs leading-snug text-[#e6edf3]">{meta.title}</p>
+
+      {/* Significance badge */}
+      {significance !== null && <SignificanceBadge score={significance} />}
 
       {/* Subject tags */}
       {meta.subjects.length > 0 && (

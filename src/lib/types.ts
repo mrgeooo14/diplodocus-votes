@@ -75,3 +75,9 @@ export interface FilterState {
   resolutionId: string | null;
   topic: string | null;
 }
+
+export interface Insight {
+  id: string;
+  text: string;
+  kind: 'stat' | 'trend' | 'record' | 'today';
+}
