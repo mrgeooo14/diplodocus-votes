@@ -25,6 +25,7 @@ dist-ssr
 
 # Pipeline scripts (one-time data processing, not part of the site)
 scripts/
+reports/
 
 # Claude Code internal
 .claude/
