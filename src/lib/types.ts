@@ -49,6 +49,7 @@ export interface CountryVoteInfo {
 export interface ScVeto {
   id: number;
   year: number;
+  date: number;
   'draft_res#': string;
   agenda: string;
   short_agenda: string;
@@ -59,6 +60,12 @@ export interface ScVeto {
   france: number;
   united_states: number;
   united_kingdom: number;
+}
+
+export interface ResolutionMeta {
+  symbol: string;
+  title: string;
+  subjects: string[];
 }
 
 export interface FilterState {

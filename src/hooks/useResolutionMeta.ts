@@ -1,32 +1,32 @@
 import { useEffect, useState } from 'react';
 import { getSupabase } from '../lib/supabase';
 import { useFilterStore } from '../store/filterStore';
+import type { ResolutionMeta } from '../lib/types';
 
-export interface ResolutionMeta {
-  symbol: string;
-  title: string;
-  subjects: string[];
-}
+export type { ResolutionMeta };
 
 const cache = new Map<string, ResolutionMeta | null>();
 
 export function useResolutionMeta(): ResolutionMeta | null {
-  const { mode, resolutionId } = useFilterStore();
-  const [meta, setMeta] = useState<ResolutionMeta | null>(null);
+  const { mode, resolutionId, resolutionMeta, setResolutionMeta } = useFilterStore();
+  const [fetchedMeta, setFetchedMeta] = useState<ResolutionMeta | null>(null);
 
   useEffect(() => {
     if (mode !== 'resolution' || !resolutionId) {
-      setMeta(null);
+      setFetchedMeta(null);
       return;
     }
 
+    // Already populated from the picker — no fetch needed
+    if (resolutionMeta) return;
+
     if (cache.has(resolutionId)) {
-      setMeta(cache.get(resolutionId) ?? null);
+      const cached = cache.get(resolutionId) ?? null;
+      setResolutionMeta(cached);
       return;
     }
 
     let cancelled = false;
-
     const sb = getSupabase();
     if (!sb) return;
 
@@ -36,11 +36,7 @@ export function useResolutionMeta(): ResolutionMeta | null {
       .single()
       .then(({ data, error }) => {
         if (cancelled) return;
-        if (error || !data) {
-          cache.set(resolutionId, null);
-          setMeta(null);
-          return;
-        }
+        if (error || !data) { cache.set(resolutionId, null); return; }
 
         type SubjectJoin = { subjects: { label: string } | null };
         const subjects = ((data.resolution_subjects as SubjectJoin[]) ?? [])
@@ -49,11 +45,12 @@ export function useResolutionMeta(): ResolutionMeta | null {
 
         const result: ResolutionMeta = { symbol: data.symbol, title: data.title, subjects };
         cache.set(resolutionId, result);
-        setMeta(result);
+        setResolutionMeta(result);
       });
 
     return () => { cancelled = true; };
-  }, [mode, resolutionId]);
+  }, [mode, resolutionId, resolutionMeta]);
 
-  return meta;
+  if (mode !== 'resolution' || !resolutionId) return null;
+  return resolutionMeta ?? fetchedMeta;
 }

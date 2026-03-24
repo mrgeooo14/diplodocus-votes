@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useFilterStore } from '../../store/filterStore';
 import type { Resolution } from '../../lib/types';
+import { VetoList } from './VetoList';
 
 const cache = new Map<string, Resolution[]>();
 
@@ -37,7 +38,7 @@ function VoteBar({ yes, no, abs, nx }: { yes: number; no: number; abs: number; n
 type SortKey = 'symbol' | 'date' | 'controversy';
 
 export function ResolutionPicker() {
-  const { body, year, resolutionId, resolutionPickerOpen, setResolutionPickerOpen, setResolutionId, setMode } =
+  const { body, year, resolutionId, resolutionPickerOpen, setResolutionPickerOpen, setResolutionId, setResolutionMeta, setMode } =
     useFilterStore();
 
   const [allResolutions, setAllResolutions] = useState<Resolution[]>([]);
@@ -45,6 +46,7 @@ export function ResolutionPicker() {
   const [yearFilter, setYearFilter] = useState<number | null>(year);
   const [sortKey, setSortKey] = useState<SortKey>('date');
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc');
+  const [showVetoed, setShowVetoed] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -57,6 +59,7 @@ export function ResolutionPicker() {
     if (resolutionPickerOpen) {
       setQuery('');
       setYearFilter(year);
+      setShowVetoed(false);
       setTimeout(() => inputRef.current?.focus(), 50);
     }
   }, [resolutionPickerOpen]);
@@ -94,6 +97,7 @@ export function ResolutionPicker() {
   const arrow = (key: SortKey) => sortKey === key ? (sortDir === 'asc' ? ' ↑' : ' ↓') : '';
 
   function select(r: Resolution) {
+    setResolutionMeta({ symbol: r.symbol, title: r.title, subjects: r.subjects });
     setResolutionId(r.id);
     setMode('resolution');
     setResolutionPickerOpen(false);
@@ -127,7 +131,7 @@ export function ResolutionPicker() {
             {body === 'GA' ? 'UN General Assembly' : 'UN Security Council'} Resolutions
           </span>
           <div className="flex items-center gap-3">
-            <span className="text-xs text-[#8b949e]">{filtered.length} resolutions</span>
+            {!showVetoed && <span className="text-xs text-[#8b949e]">{filtered.length} resolutions</span>}
             {closeBtn}
           </div>
         </div>
@@ -163,7 +167,7 @@ export function ResolutionPicker() {
               <option value="">All years</option>
               {availableYears.map(y => <option key={y} value={y}>{y}</option>)}
             </select>
-            {([
+            {!showVetoed && ([
               { label: 'Most Recent', key: 'date' as const, dir: 'desc' as const },
               { label: 'Most Divisive', key: 'controversy' as const, dir: 'desc' as const },
               { label: 'Most Unanimous', key: 'controversy' as const, dir: 'asc' as const },
@@ -183,26 +187,46 @@ export function ResolutionPicker() {
                 </button>
               );
             })}
+            {body === 'SC' && (
+              <button
+                onClick={() => setShowVetoed(v => !v)}
+                className={`rounded px-2 py-1 text-xs transition-colors ${
+                  showVetoed
+                    ? 'bg-[#ef4444] text-white'
+                    : 'border border-[#30363d] bg-[#21262d] text-[#8b949e] hover:border-[#8b949e] hover:text-[#e6edf3]'
+                }`}
+              >
+                Vetoed
+              </button>
+            )}
           </div>
         </div>
 
         {/* Column headers */}
         <div className="grid grid-cols-[130px_1fr_80px_100px] gap-3 border-b border-[#30363d] px-5 py-2 text-xs font-semibold uppercase tracking-wider text-[#8b949e]">
-          <button onClick={() => toggleSort('symbol')} className="flex items-center gap-0.5 hover:text-[#e6edf3] text-left">
-            Symbol{arrow('symbol')}
-          </button>
-          <span>Title</span>
-          <button onClick={() => toggleSort('date')} className="flex items-center gap-0.5 hover:text-[#e6edf3] text-left">
-            Date{arrow('date')}
-          </button>
-          <button onClick={() => toggleSort('controversy')} className="flex items-center gap-0.5 hover:text-[#e6edf3] text-left">
-            Votes{arrow('controversy')}
-          </button>
+          {showVetoed ? (<>
+            <span>Draft #</span>
+            <span>Topic</span>
+            <span>Date</span>
+            <span>Vetoed by</span>
+          </>) : (<>
+            <button onClick={() => toggleSort('symbol')} className="flex items-center gap-0.5 hover:text-[#e6edf3] text-left">
+              Symbol{arrow('symbol')}
+            </button>
+            <span>Title</span>
+            <button onClick={() => toggleSort('date')} className="flex items-center gap-0.5 hover:text-[#e6edf3] text-left">
+              Date{arrow('date')}
+            </button>
+            <button onClick={() => toggleSort('controversy')} className="flex items-center gap-0.5 hover:text-[#e6edf3] text-left">
+              Votes{arrow('controversy')}
+            </button>
+          </>)}
         </div>
 
-        {/* Resolution list */}
-        <div className="flex-1 overflow-y-auto">
-          {filtered.length === 0 && (
+        {/* List */}
+        <div className="relative flex-1 overflow-y-auto">
+          {showVetoed && <VetoList query={query} yearFilter={yearFilter} />}
+          {!showVetoed && filtered.length === 0 && (
             <div className="flex flex-col items-center pt-12 text-sm text-[#8b949e]">
               <p>{allResolutions.length === 0 ? 'Loading…' : 'No resolutions match your filters.'}</p>
               {allResolutions.length > 0 && (
@@ -215,7 +239,7 @@ export function ResolutionPicker() {
               )}
             </div>
           )}
-          {filtered.map(r => (
+          {!showVetoed && filtered.map(r => (
             <button
               key={r.id}
               onClick={() => select(r)}

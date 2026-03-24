@@ -1,11 +1,13 @@
 import { create } from 'zustand';
-import type { FilterState, Body, FilterMode, MapColorMode } from '../lib/types';
+import type { FilterState, Body, FilterMode, MapColorMode, ResolutionMeta } from '../lib/types';
 
 interface FilterStore extends FilterState {
   setBody: (body: Body) => void;
   setMode: (mode: FilterMode) => void;
   setYear: (year: number) => void;
   setResolutionId: (id: string | null) => void;
+  setResolutionMeta: (meta: ResolutionMeta | null) => void;
+  resolutionMeta: ResolutionMeta | null;
   setTopic: (topic: string | null) => void;
   resolutionPickerOpen: boolean;
   setResolutionPickerOpen: (open: boolean) => void;
@@ -20,6 +22,7 @@ export const useFilterStore = create<FilterStore>((set) => ({
   mode: 'year',
   year: 2025,
   resolutionId: null,
+  resolutionMeta: null,
   topic: null,
   resolutionPickerOpen: false,
   mapColorMode: 'default',
@@ -28,6 +31,7 @@ export const useFilterStore = create<FilterStore>((set) => ({
   setMode: (mode) => set({ mode }),
   setYear: (year) => set({ year }),
   setResolutionId: (resolutionId) => set({ resolutionId }),
+  setResolutionMeta: (resolutionMeta) => set({ resolutionMeta }),
   setTopic: (topic) => set({ topic }),
   setResolutionPickerOpen: (resolutionPickerOpen) => set({ resolutionPickerOpen }),
   setMapColorMode: (mapColorMode) => set({ mapColorMode }),

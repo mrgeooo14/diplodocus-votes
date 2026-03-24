@@ -9,6 +9,10 @@ export function AboutPage() {
         </div>
         <h1 className="mt-5 text-2xl font-bold text-[#e6edf3]">About DiploDocus</h1>
         <p className="mt-2 text-[#8b949e]">Making Diplomacy Accessible.</p>
+        <p className="mt-3 text-sm text-[#8b949e]">
+          This site is powered by <span className="text-[#e6edf3] font-medium">Delphi</span>, our all-knowing diplo-owl and AI assistant —
+          a creature of <span className="text-[#e6edf3] font-medium">Claude</span>, born to read between the ciphers and intricacies of diplomacy.
+        </p>
       </div>
 
       <div className="absolute bottom-8 left-0 right-0 flex flex-col items-center gap-2 px-4 text-center">
