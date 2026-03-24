@@ -1,20 +1,6 @@
 import type { CountryVoteInfo, VoteValue } from '../../lib/types';
 import type { ComparisonStat } from '../../hooks/useVoteData';
-import type { TrendDirection } from '../../hooks/useYearlyTrends';
 import { iso3ToName } from '../../lib/countryIso';
-import { DiploLogo } from '../layout/DiploLogo';
-
-const TREND_ARROW: Record<TrendDirection, string> = {
-  up: '↑',
-  down: '↓',
-  stable: '→',
-};
-
-const TREND_COLOR: Record<TrendDirection, string> = {
-  up: '#22c55e',
-  down: '#ef4444',
-  stable: '#8b949e',
-};
 
 const VOTE_LABELS: Record<VoteValue, string> = {
   Y: 'Yes',
@@ -41,10 +27,9 @@ interface Props {
   info: CountryVoteInfo;
   comparisonStat?: ComparisonStat | null;
   compareCountry?: string | null;
-  trend?: TrendDirection | null;
 }
 
-export function CountryTooltip({ x, y, name, info, comparisonStat, compareCountry, trend }: Props) {
+export function CountryTooltip({ x, y, name, info, comparisonStat, compareCountry }: Props) {
   const total = info.total ?? 0;
 
   return (
@@ -52,19 +37,7 @@ export function CountryTooltip({ x, y, name, info, comparisonStat, compareCountr
       className="pointer-events-none absolute z-50 rounded border border-[#30363d] bg-[#161b22] px-3 py-2 text-sm shadow-lg"
       style={{ left: x + 14, top: y - 10 }}
     >
-      <div className="flex items-center gap-1.5">
-        <DiploLogo size={14} />
-        <p className="font-semibold text-[#e6edf3]">{name}</p>
-        {trend && (
-          <span
-            className="ml-auto text-sm font-bold"
-            style={{ color: TREND_COLOR[trend] }}
-            title={`3-year trend: ${trend}`}
-          >
-            {TREND_ARROW[trend]}
-          </span>
-        )}
-      </div>
+      <p className="font-semibold text-[#e6edf3]">{name}</p>
 
       {/* Comparison stats — shown instead of raw vote info when in a comparison mode */}
       {comparisonStat?.kind === 'us-china' ? (

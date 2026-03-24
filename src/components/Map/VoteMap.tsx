@@ -7,7 +7,6 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 
 import { useVoteData } from '../../hooks/useVoteData';
 import { useFilterStore } from '../../store/filterStore';
-import { useYearlyTrends } from '../../hooks/useYearlyTrends';
 import { CountryTooltip } from './CountryTooltip';
 import { MapLegend } from './MapLegend';
 import { MapModeBar } from './MapModeBar';
@@ -46,7 +45,6 @@ export function VoteMap() {
   const mapRef = useRef<MapRef>(null);
   const { countryColors, countryVoteInfo, comparisonStats, loading } = useVoteData();
   const { body, mapColorMode, compareCountry } = useFilterStore();
-  const yearlyTrends = useYearlyTrends();
   const [baseGeo, setBaseGeo] = useState<FeatureCollection | null>(null);
   const [hover, setHover] = useState<HoverState | null>(null);
 
@@ -136,7 +134,6 @@ export function VoteMap() {
           info={countryVoteInfo[hover.iso3] ?? {}}
           comparisonStat={comparisonStats?.[hover.iso3] ?? null}
           compareCountry={mapColorMode === 'country' ? compareCountry : null}
-          trend={yearlyTrends[hover.iso3] ?? null}
         />
       )}
 
