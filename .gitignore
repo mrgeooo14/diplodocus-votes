@@ -23,8 +23,8 @@ dist-ssr
 *.sln
 *.sw?
 
-# Environment / secrets
-scripts/.env
+# Pipeline scripts (one-time data processing, not part of the site)
+scripts/
 
 # Claude Code internal
 .claude/
