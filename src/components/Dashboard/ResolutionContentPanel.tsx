@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useResolutionContent } from '../../hooks/useResolutionContent';
 import { useResolutionMeta } from '../../hooks/useResolutionMeta';
 import { useResolutionSignificance } from '../../hooks/useResolutionSignificance';
+import { useResolutionTopics } from '../../hooks/useResolutionTopics';
 import { DiploLogo } from '../layout/DiploLogo';
 import { ResolutionFullTextModal } from './ResolutionFullTextModal';
 
@@ -27,6 +28,7 @@ export function ResolutionContentPanel() {
   const meta = useResolutionMeta();
   const { content, loading } = useResolutionContent();
   const significance = useResolutionSignificance();
+  const topics = useResolutionTopics();
   const [modalOpen, setModalOpen] = useState(false);
 
   if (!meta) {
@@ -57,15 +59,15 @@ export function ResolutionContentPanel() {
       {/* Significance badge */}
       {significance !== null && <SignificanceBadge score={significance} />}
 
-      {/* Subject tags */}
-      {meta.subjects.length > 0 && (
+      {/* Topic tags */}
+      {topics.length > 0 && (
         <div className="mb-3 flex flex-wrap gap-1">
-          {meta.subjects.map(s => (
+          {topics.map(t => (
             <span
-              key={s}
+              key={t}
               className="rounded-full bg-[#21262d] px-2 py-0.5 text-[10px] text-[#8b949e]"
             >
-              {s}
+              {t}
             </span>
           ))}
         </div>

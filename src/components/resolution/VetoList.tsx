@@ -51,7 +51,7 @@ export function VetoList({ query, yearFilter, sortDir = 'desc', topicFilter = nu
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    let base = vetoes;
+    let base = vetoes.filter(v => v.year >= 1992);
     if (yearFilter !== null) base = base.filter(v => v.year === yearFilter);
     if (q) base = base.filter(v =>
       v['draft_res#'].toLowerCase().includes(q) ||
