@@ -23,7 +23,7 @@ async function findResolution(symbol: string): Promise<Resolution | null> {
 }
 
 function ResolutionLink({ res }: { res: KeyResolution }) {
-  const { setResolutionId, setMode } = useFilterStore();
+  const { setResolutionId, setMode, setResolutionMeta } = useFilterStore();
   const loading = useRef(false);
 
   const handleClick = useCallback(async () => {
@@ -32,13 +32,14 @@ function ResolutionLink({ res }: { res: KeyResolution }) {
     try {
       const found = await findResolution(res.symbol);
       if (found) {
+        setResolutionMeta(null);
         setResolutionId(found.id);
         setMode('resolution');
       }
     } finally {
       loading.current = false;
     }
-  }, [res.symbol, setResolutionId, setMode]);
+  }, [res.symbol, setResolutionId, setMode, setResolutionMeta]);
 
   return (
     <button

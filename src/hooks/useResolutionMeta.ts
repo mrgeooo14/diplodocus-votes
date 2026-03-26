@@ -17,8 +17,8 @@ export function useResolutionMeta(): ResolutionMeta | null {
       return;
     }
 
-    // Already populated from the picker — no fetch needed
-    if (resolutionMeta) return;
+    // Already populated and belongs to this resolution — no fetch needed
+    if (resolutionMeta?.symbol === resolutionId.replace(/_/g, '/')) return;
 
     if (cache.has(resolutionId)) {
       const cached = cache.get(resolutionId) ?? null;
