@@ -39,7 +39,7 @@ export function useResolutionMeta(): ResolutionMeta | null {
         if (error || !data) { cache.set(resolutionId, null); return; }
 
         type SubjectJoin = { subjects: { label: string } | null };
-        const subjects = ((data.resolution_subjects as SubjectJoin[]) ?? [])
+        const subjects = ((data.resolution_subjects as unknown as SubjectJoin[]) ?? [])
           .map(rs => rs.subjects?.label)
           .filter((l): l is string => Boolean(l));
 

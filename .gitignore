@@ -36,3 +36,5 @@ reports/
 
 # Claude Code internal
 .claude/
+
+.vercel
