@@ -101,7 +101,7 @@ export function CountryPickerModal({ onSelect, onClose }: CountryPickerModalProp
           background: '#161b22',
           border: '1px solid #30363d',
           borderRadius: 12,
-          width: 400,
+          width: 'min(400px, 92vw)',
           maxHeight: '82vh',
           display: 'flex',
           flexDirection: 'column',

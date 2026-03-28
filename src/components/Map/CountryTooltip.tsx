@@ -29,10 +29,11 @@ interface Props {
   comparisonStat?: ComparisonStat | null;
   compareCountry?: string | null;
   isReferenceCountry?: boolean;
+  pinned?: boolean;
 }
 
 export const CountryTooltip = forwardRef<HTMLDivElement, Props>(function CountryTooltip(
-  { x, y, name, info, comparisonStat, compareCountry, isReferenceCountry }: Props,
+  { x, y, name, info, comparisonStat, compareCountry, isReferenceCountry, pinned }: Props,
   ref,
 ) {
   const total = info.total ?? 0;
@@ -43,7 +44,11 @@ export const CountryTooltip = forwardRef<HTMLDivElement, Props>(function Country
       role="tooltip"
       aria-live="polite"
       className="pointer-events-none absolute z-50 rounded border border-[#30363d] bg-[#161b22] px-3 py-2 text-sm shadow-lg"
-      style={{ left: x + 14, top: y - 10 }}
+      style={
+        pinned
+          ? { bottom: 16, left: '50%', transform: 'translateX(-50%)', top: 'auto', maxWidth: '80vw' }
+          : { left: x + 14, top: y - 10 }
+      }
     >
       <p className="font-semibold text-[#e6edf3]">{name}</p>
 

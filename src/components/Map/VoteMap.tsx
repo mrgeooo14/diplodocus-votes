@@ -57,6 +57,9 @@ export function VoteMap() {
   const [baseGeo, setBaseGeo] = useState<FeatureCollection | null>(null);
   const [mapReady, setMapReady] = useState(false);
   const [hover, setHover] = useState<HoverState | null>(null);
+  const [isTouchDevice] = useState(() =>
+    typeof window !== 'undefined' && window.matchMedia('(hover: none)').matches
+  );
 
   // iso3 → feature index map (generateId assigns IDs as array indices)
   const iso3ToIdRef = useRef<Map<string, number>>(new Map());
@@ -136,6 +139,28 @@ export function VoteMap() {
     setHover(null);
   }, []);
 
+  const onClick = useCallback((e: MapMouseEvent & { features?: unknown[] }) => {
+    const feature = (e.features as Array<{ id?: number | string; properties?: Record<string, unknown> }> | undefined)?.[0];
+    if (feature) {
+      const iso3 = String(feature.properties?.['iso3'] ?? extractIso3(feature.properties ?? {}));
+      if (iso3 === prevIso3Ref.current) {
+        prevIso3Ref.current = null;
+        setHover(null);
+      } else {
+        posRef.current = { x: e.point.x, y: e.point.y };
+        prevIso3Ref.current = iso3;
+        setHover({
+          featureId: feature.id,
+          iso3,
+          name: String(feature.properties?.['NAME'] ?? feature.properties?.['ADMIN'] ?? ''),
+        });
+      }
+    } else {
+      prevIso3Ref.current = null;
+      setHover(null);
+    }
+  }, []);
+
   const hoverFill = useMemo<FillLayerSpecification>(() => ({
     id: 'country-hover',
     type: 'fill',
@@ -158,6 +183,7 @@ export function VoteMap() {
         interactiveLayerIds={['country-fill']}
         onMouseMove={onMouseMove}
         onMouseLeave={onMouseLeave}
+        onClick={onClick}
         onLoad={() => setMapReady(true)}
         attributionControl={false}
         style={{ width: '100%', height: '100%' }}
@@ -184,6 +210,7 @@ export function VoteMap() {
           comparisonStat={comparisonStats?.[hover.iso3] ?? null}
           compareCountry={mapColorMode === 'country' ? compareCountry : null}
           isReferenceCountry={mapColorMode === 'country' && hover.iso3 === compareCountry}
+          pinned={isTouchDevice}
         />
       )}
 
