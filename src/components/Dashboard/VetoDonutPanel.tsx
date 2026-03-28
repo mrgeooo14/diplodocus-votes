@@ -174,7 +174,7 @@ export function VetoDonutPanel() {
   const { year } = useFilterStore();
   const [selected, setSelected] = useState<VetoMemberKey | null>(null);
 
-  if (loading || counts === null) return null;
+  if (loading) return null;
 
   if (year < 1992) {
     return (
@@ -186,6 +186,8 @@ export function VetoDonutPanel() {
       </div>
     );
   }
+
+  if (counts === null) return null;
 
   let cumAngle = 0;
   const segments: Segment[] = P5_MEMBERS.map(m => {

@@ -32,7 +32,9 @@ export function AllCountriesButton() {
       const counts: Record<string, number> = { Y: 0, N: 0, A: 0 };
       for (const p of active) if (p.vote) counts[p.vote] = (counts[p.vote] ?? 0) + 1;
       const alignment = Math.max(...Object.values(counts)) / active.length;
-      return { positions, alignment };
+      const labels: Record<string, string> = {};
+      for (const p of positions) labels[p.iso3] = iso3ToName(p.iso3);
+      return { positions, alignment, labels };
     }
 
     // year / topic: yes-rate per country
@@ -48,15 +50,14 @@ export function AllCountriesButton() {
     const mean = rates.reduce((a, b) => a + b, 0) / rates.length;
     const variance = rates.reduce((a, r) => a + (r - mean) ** 2, 0) / rates.length;
     const alignment = Math.max(0, Math.min(1, 1 - Math.sqrt(variance) / 0.5));
-    return { positions, alignment };
+    const labels: Record<string, string> = {};
+    for (const p of positions) labels[p.iso3] = iso3ToName(p.iso3);
+    return { positions, alignment, labels };
   }, [mode, p5ResolutionVotes, countryVoteInfo, loading]);
 
   if (!result) return null;
 
-  const labels: Record<string, string> = {};
-  for (const p of result.positions) {
-    labels[p.iso3] = iso3ToName(p.iso3);
-  }
+  const { labels } = result;
 
   return (
     <>

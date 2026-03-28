@@ -1,3 +1,4 @@
+import { forwardRef } from 'react';
 import type { CountryVoteInfo, VoteValue } from '../../lib/types';
 import type { ComparisonStat } from '../../hooks/useVoteData';
 import { iso3ToName } from '../../lib/countryIso';
@@ -29,11 +30,15 @@ interface Props {
   compareCountry?: string | null;
 }
 
-export function CountryTooltip({ x, y, name, info, comparisonStat, compareCountry }: Props) {
+export const CountryTooltip = forwardRef<HTMLDivElement, Props>(function CountryTooltip(
+  { x, y, name, info, comparisonStat, compareCountry }: Props,
+  ref,
+) {
   const total = info.total ?? 0;
 
   return (
     <div
+      ref={ref}
       className="pointer-events-none absolute z-50 rounded border border-[#30363d] bg-[#161b22] px-3 py-2 text-sm shadow-lg"
       style={{ left: x + 14, top: y - 10 }}
     >
@@ -89,4 +94,4 @@ export function CountryTooltip({ x, y, name, info, comparisonStat, compareCountr
       )}
     </div>
   );
-}
+});

@@ -49,7 +49,7 @@ export function useResolutionMeta(): ResolutionMeta | null {
       });
 
     return () => { cancelled = true; };
-  }, [mode, resolutionId, resolutionMeta]);
+  }, [mode, resolutionId, resolutionMeta, setResolutionMeta]);
 
   if (mode !== 'resolution' || !resolutionId) return null;
   return resolutionMeta ?? fetchedMeta;

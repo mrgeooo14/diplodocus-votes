@@ -1,16 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useFilterStore } from '../store/filterStore';
 import type { ScVeto } from '../lib/types';
-
-const fetchCache = new Map<string, unknown>();
-
-async function fetchJSON<T>(url: string): Promise<T> {
-  if (fetchCache.has(url)) return fetchCache.get(url) as T;
-  const res = await fetch(url);
-  const data: T = await res.json();
-  fetchCache.set(url, data);
-  return data;
-}
+import { fetchJSON } from '../lib/fetchCache';
 
 export type VetoMemberKey =
   | 'russian_federation_ussr'

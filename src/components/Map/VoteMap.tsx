@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState, useMemo, useCallback } from 'react';
-import Map, { Source, Layer } from 'react-map-gl/maplibre';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import ReactMap, { Source, Layer } from 'react-map-gl/maplibre';
 import type { MapMouseEvent, MapRef, FillLayerSpecification, LineLayerSpecification } from 'react-map-gl/maplibre';
 import type { StyleSpecification } from 'maplibre-gl';
 import type { FeatureCollection } from 'geojson';
@@ -18,11 +18,12 @@ const MAP_STYLE: StyleSpecification = {
   layers: [{ id: 'background', type: 'background', paint: { 'background-color': '#0a1628' } }],
 };
 
+// Paint uses feature-state so the GeoJSON source never needs to be rebuilt on color change.
 const FILL_LAYER: Omit<FillLayerSpecification, 'source'> = {
   id: 'country-fill',
   type: 'fill',
   paint: {
-    'fill-color': ['coalesce', ['get', 'fillColor'], NO_DATA_COLOR] as FillLayerSpecification['paint']['fill-color'],
+    'fill-color': ['coalesce', ['feature-state', 'fillColor'], NO_DATA_COLOR] as unknown as NonNullable<FillLayerSpecification['paint']>['fill-color'],
     'fill-opacity': 0.9,
   },
 };
@@ -33,10 +34,18 @@ const OUTLINE_LAYER: Omit<LineLayerSpecification, 'source'> = {
   paint: { 'line-color': '#1a2535', 'line-width': 0.6 },
 };
 
+function extractIso3(props: Record<string, unknown>): string {
+  const rawIso = props['ISO_A3'] as string | undefined;
+  if (rawIso && rawIso !== '-99') return rawIso;
+  return (
+    (props['ISO_A3_EH'] as string | undefined) ??
+    (props['ADM0_A3'] as string | undefined) ??
+    ''
+  );
+}
+
 interface HoverState {
   featureId: number | string | undefined;
-  x: number;
-  y: number;
   iso3: string;
   name: string;
 }
@@ -46,90 +55,125 @@ export function VoteMap() {
   const { countryColors, countryVoteInfo, comparisonStats, loading } = useVoteData();
   const { body, mapColorMode, compareCountry } = useFilterStore();
   const [baseGeo, setBaseGeo] = useState<FeatureCollection | null>(null);
+  const [mapReady, setMapReady] = useState(false);
   const [hover, setHover] = useState<HoverState | null>(null);
+
+  // iso3 → feature index map (generateId assigns IDs as array indices)
+  const iso3ToIdRef = useRef<Map<string, number>>(new Map());
+  // Tooltip DOM ref for direct position updates (avoids setState on every pixel)
+  const tooltipRef = useRef<HTMLDivElement>(null);
+  // Track last hovered iso3 to avoid setState on same-country moves
+  const prevIso3Ref = useRef<string | null>(null);
+  // Latest mouse position — read on render so initial tooltip placement is correct
+  const posRef = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
     fetch('/data/geo/countries.geojson')
       .then(r => r.json())
-      .then(data => setBaseGeo(data as FeatureCollection));
+      .then((data: FeatureCollection) => {
+        const idMap = new Map<string, number>();
+        data.features.forEach((f, idx) => {
+          const iso3 = extractIso3((f.properties ?? {}) as Record<string, unknown>);
+          if (iso3) idMap.set(iso3, idx);
+        });
+        iso3ToIdRef.current = idMap;
+        setBaseGeo(data);
+      });
   }, []);
 
-  const coloredGeo = useMemo<FeatureCollection | null>(() => {
-    if (!baseGeo) return null;
-    return {
-      ...baseGeo,
-      features: baseGeo.features.map(f => {
-        const props = f.properties ?? {};
-        const rawIso = props['ISO_A3'] as string | undefined;
-        const iso3 =
-          rawIso && rawIso !== '-99'
-            ? rawIso
-            : ((props['ISO_A3_EH'] as string | undefined) ?? (props['ADM0_A3'] as string | undefined) ?? '');
-        return {
-          ...f,
-          properties: {
-            ...props,
-            iso3,
-            fillColor: countryColors[iso3] ?? NO_DATA_COLOR,
-          },
-        };
-      }),
-    };
-  }, [baseGeo, countryColors]);
+  // Apply colors via feature state — no GeoJSON rebuild on filter change
+  useEffect(() => {
+    if (!mapReady || !baseGeo) return;
+    const map = mapRef.current?.getMap();
+    if (!map) return;
+
+    const iso3ToId = iso3ToIdRef.current;
+
+    // Clear all feature state, then re-apply current colors
+    map.removeFeatureState({ source: 'countries' });
+    for (const [iso3, color] of Object.entries(countryColors)) {
+      const id = iso3ToId.get(iso3);
+      if (id !== undefined) {
+        map.setFeatureState({ source: 'countries', id }, { fillColor: color });
+      }
+    }
+  }, [countryColors, mapReady, baseGeo]);
 
   const onMouseMove = useCallback((e: MapMouseEvent & { features?: unknown[] }) => {
     const feature = (e.features as Array<{ id?: number | string; properties?: Record<string, unknown> }> | undefined)?.[0];
+
     if (feature) {
-      mapRef.current?.getMap().getCanvas().style.setProperty('cursor', 'pointer');
-      setHover({
-        featureId: feature.id,
-        x: e.point.x,
-        y: e.point.y,
-        iso3: String(feature.properties?.['iso3'] ?? ''),
-        name: String(feature.properties?.['NAME'] ?? feature.properties?.['ADMIN'] ?? ''),
-      });
+      // Always track position in ref (used for initial render on country entry)
+      posRef.current = { x: e.point.x, y: e.point.y };
+      // Update tooltip position directly in the DOM — no React re-render for position
+      if (tooltipRef.current) {
+        tooltipRef.current.style.left = `${e.point.x + 14}px`;
+        tooltipRef.current.style.top = `${e.point.y - 10}px`;
+      }
+
+      const iso3 = String(feature.properties?.['iso3'] ?? extractIso3(feature.properties ?? {}));
+
+      if (iso3 !== prevIso3Ref.current) {
+        prevIso3Ref.current = iso3;
+        mapRef.current?.getMap().getCanvas().style.setProperty('cursor', 'pointer');
+        setHover({
+          featureId: feature.id,
+          iso3,
+          name: String(feature.properties?.['NAME'] ?? feature.properties?.['ADMIN'] ?? ''),
+        });
+      }
     } else {
-      mapRef.current?.getMap().getCanvas().style.setProperty('cursor', '');
-      setHover(null);
+      if (prevIso3Ref.current !== null) {
+        prevIso3Ref.current = null;
+        mapRef.current?.getMap().getCanvas().style.setProperty('cursor', '');
+        setHover(null);
+      }
     }
   }, []);
 
-  const hoverFill: FillLayerSpecification = {
+  const onMouseLeave = useCallback(() => {
+    prevIso3Ref.current = null;
+    setHover(null);
+  }, []);
+
+  const hoverFill = useMemo<FillLayerSpecification>(() => ({
     id: 'country-hover',
     type: 'fill',
     source: 'countries',
     filter: hover?.featureId != null ? ['==', ['id'], hover.featureId as number] : ['==', ['id'], -1],
     paint: { 'fill-color': '#ffffff', 'fill-opacity': 0.12 },
-  };
+  }), [hover?.featureId]);
 
   return (
     <div className="relative h-full w-full">
-      <Map
+      <ReactMap
         ref={mapRef}
         mapStyle={MAP_STYLE}
         initialViewState={{ longitude: 15, latitude: 15, zoom: 1.4 }}
         interactiveLayerIds={['country-fill']}
         onMouseMove={onMouseMove}
-        onMouseLeave={() => setHover(null)}
+        onMouseLeave={onMouseLeave}
+        onLoad={() => setMapReady(true)}
         attributionControl={false}
         style={{ width: '100%', height: '100%' }}
       >
-        {coloredGeo && (
-          <Source id="countries" type="geojson" data={coloredGeo} generateId>
+        {baseGeo && (
+          <Source id="countries" type="geojson" data={baseGeo} generateId>
             <Layer {...FILL_LAYER} source="countries" />
             <Layer {...hoverFill} />
             <Layer {...OUTLINE_LAYER} source="countries" />
           </Source>
         )}
-      </Map>
+      </ReactMap>
 
       {body === 'GA' && <MapModeBar />}
       <MapLegend />
 
       {hover && hover.iso3 && (countryVoteInfo[hover.iso3] || comparisonStats?.[hover.iso3] || hover.iso3 === compareCountry) && (
         <CountryTooltip
-          x={hover.x}
-          y={hover.y}
+          ref={tooltipRef}
+          x={posRef.current.x}
+          y={posRef.current.y}
           name={hover.name}
           info={countryVoteInfo[hover.iso3] ?? {}}
           comparisonStat={comparisonStats?.[hover.iso3] ?? null}

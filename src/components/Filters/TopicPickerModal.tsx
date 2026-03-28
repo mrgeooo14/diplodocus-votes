@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useFilterStore } from '../../store/filterStore';
 import type { TopicsIndex, Body } from '../../lib/types';
 import { TOPIC_ICONS } from './TopicIcons';
+import { fetchJSON } from '../../lib/fetchCache';
 
 interface L2Item {
   label: string;
@@ -59,12 +60,10 @@ export function TopicPickerModal() {
   const searchRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    fetch('/data/aggregates/topics.json')
-      .then(r => r.json())
-      .then((data: TopicsIndex) => {
-        setTopicsData(data);
-        setGroups(buildGroups(data, body));
-      });
+    fetchJSON<TopicsIndex>('/data/aggregates/topics.json').then((data) => {
+      setTopicsData(data);
+      setGroups(buildGroups(data, body));
+    });
   }, []);
 
   // Rebuild counts when body changes

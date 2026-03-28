@@ -1,8 +1,10 @@
+import { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Header } from './components/layout/Header';
 import { Footer } from './components/layout/Footer';
 import { VotesPage } from './pages/VotesPage';
-import { AboutPage } from './pages/AboutPage';
+
+const AboutPage = lazy(() => import('./pages/AboutPage').then(m => ({ default: m.AboutPage })));
 
 function App() {
   return (
@@ -12,7 +14,7 @@ function App() {
         <main className="flex flex-1 flex-col overflow-hidden">
           <Routes>
             <Route path="/" element={<VotesPage />} />
-            <Route path="/about" element={<AboutPage />} />
+            <Route path="/about" element={<Suspense fallback={null}><AboutPage /></Suspense>} />
           </Routes>
         </main>
         <Footer />

@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useFilterStore } from '../store/filterStore';
 import type { Resolution, YearlyAggregate, TopicsIndex, VoteValue, CountryVoteInfo } from '../lib/types';
 import { VOTE_COLORS, NO_DATA_COLOR } from '../lib/colors';
+import { fetchJSON } from '../lib/fetchCache';
 
 function usVsChinaColor(t: number): string {
   // t=0: China (red), t=0.5: neutral (gray), t=1: US (light blue)
@@ -88,16 +89,6 @@ function computeCountryComparisonColors(resolutions: Resolution[], compareIso: s
   return { colors, stats };
 }
 
-const fetchCache = new Map<string, unknown>();
-
-async function fetchJSON<T>(url: string): Promise<T> {
-  if (fetchCache.has(url)) return fetchCache.get(url) as T;
-  const res = await fetch(url);
-  const data: T = await res.json();
-  fetchCache.set(url, data);
-  return data;
-}
-
 function lerpHex(hex1: string, hex2: string, t: number): string {
   const r1 = parseInt(hex1.slice(1, 3), 16);
   const g1 = parseInt(hex1.slice(3, 5), 16);
@@ -126,6 +117,15 @@ export interface VoteDataResult {
   loading: boolean;
 }
 
+function shallowEqualRecords(a: Record<string, string>, b: Record<string, string>): boolean {
+  const aKeys = Object.keys(a);
+  if (aKeys.length !== Object.keys(b).length) return false;
+  for (const k of aKeys) {
+    if (a[k] !== b[k]) return false;
+  }
+  return true;
+}
+
 export function useVoteData(): VoteDataResult {
   const { body, mode, year, resolutionId, topic, mapColorMode, compareCountry } = useFilterStore();
   const [result, setResult] = useState<VoteDataResult>({
@@ -135,6 +135,7 @@ export function useVoteData(): VoteDataResult {
     comparisonStats: null,
     loading: true,
   });
+  const prevColorsRef = useRef<Record<string, string>>({});
 
   useEffect(() => {
     setResult(prev => ({ ...prev, loading: true }));
@@ -218,7 +219,15 @@ export function useVoteData(): VoteDataResult {
         }
       }
 
-      if (!cancelled) setResult({ countryColors: colors, countryVoteInfo: info, p5ResolutionVotes, comparisonStats, loading: false });
+      if (!cancelled) {
+        // Only issue a new object reference for countryColors if values actually changed,
+        // so downstream memos (coloredGeo in VoteMap) don't invalidate unnecessarily.
+        const stableColors = shallowEqualRecords(colors, prevColorsRef.current)
+          ? prevColorsRef.current
+          : colors;
+        prevColorsRef.current = stableColors;
+        setResult({ countryColors: stableColors, countryVoteInfo: info, p5ResolutionVotes, comparisonStats, loading: false });
+      }
     }
 
     compute().catch(console.error);

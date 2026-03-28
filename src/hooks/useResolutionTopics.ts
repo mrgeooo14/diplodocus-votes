@@ -1,15 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useFilterStore } from '../store/filterStore';
 import type { TopicsIndex } from '../lib/types';
-
-const cache = new Map<string, unknown>();
-async function fetchJSON<T>(url: string): Promise<T> {
-  if (cache.has(url)) return cache.get(url) as T;
-  const res = await fetch(url);
-  const data: T = await res.json();
-  cache.set(url, data);
-  return data;
-}
+import { fetchJSON } from '../lib/fetchCache';
 
 // Build reverse map: resolutionId → top-level topic names (no sub-topics)
 let reverseMap: Map<string, string[]> | null = null;
