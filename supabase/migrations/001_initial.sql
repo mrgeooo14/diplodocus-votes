@@ -110,7 +110,8 @@ ALTER TABLE entities            ENABLE ROW LEVEL SECURITY;
 ALTER TABLE entity_mentions     ENABLE ROW LEVEL SECURITY;
 ALTER TABLE entity_relations    ENABLE ROW LEVEL SECURITY;
 
--- Public read-only policies
+-- Public read-only policies (SELECT only — no INSERT/UPDATE/DELETE policies are defined,
+-- which means all write operations are denied by default for all roles via RLS).
 CREATE POLICY "public read" ON organizations       FOR SELECT USING (true);
 CREATE POLICY "public read" ON resolutions         FOR SELECT USING (true);
 CREATE POLICY "public read" ON votes               FOR SELECT USING (true);

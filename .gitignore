@@ -26,6 +26,7 @@ dist-ssr
 # Environment files
 .env
 .env.*
+.env.production
 
 # Pipeline scripts (one-time data processing, not part of the site)
 scripts/

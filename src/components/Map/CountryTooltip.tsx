@@ -28,10 +28,11 @@ interface Props {
   info: CountryVoteInfo;
   comparisonStat?: ComparisonStat | null;
   compareCountry?: string | null;
+  isReferenceCountry?: boolean;
 }
 
 export const CountryTooltip = forwardRef<HTMLDivElement, Props>(function CountryTooltip(
-  { x, y, name, info, comparisonStat, compareCountry }: Props,
+  { x, y, name, info, comparisonStat, compareCountry, isReferenceCountry }: Props,
   ref,
 ) {
   const total = info.total ?? 0;
@@ -71,7 +72,7 @@ export const CountryTooltip = forwardRef<HTMLDivElement, Props>(function Country
           </p>
           <p className="text-[#8b949e]">{comparisonStat.total} contested votes</p>
         </div>
-      ) : compareCountry && !comparisonStat ? (
+      ) : isReferenceCountry ? (
         // This is the reference country itself
         <p className="mt-0.5 text-xs" style={{ color: '#06b6d4' }}>Reference country</p>
       ) : info.vote !== undefined ? (

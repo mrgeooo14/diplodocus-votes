@@ -183,6 +183,7 @@ export function VoteMap() {
           info={countryVoteInfo[hover.iso3] ?? {}}
           comparisonStat={comparisonStats?.[hover.iso3] ?? null}
           compareCountry={mapColorMode === 'country' ? compareCountry : null}
+          isReferenceCountry={mapColorMode === 'country' && hover.iso3 === compareCountry}
         />
       )}
 
