@@ -1,6 +1,7 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import type { ResolutionContent } from '../../hooks/useResolutionContent';
 import type { ResolutionMeta } from '../../hooks/useResolutionMeta';
+import { useFocusTrap } from '../../hooks/useFocusTrap';
 
 interface Props {
   meta: ResolutionMeta;
@@ -9,6 +10,9 @@ interface Props {
 }
 
 export function ResolutionFullTextModal({ meta, content, onClose }: Props) {
+  const modalRef = useRef<HTMLDivElement>(null);
+  useFocusTrap(modalRef);
+
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
       if (e.key === 'Escape') onClose();
@@ -23,6 +27,10 @@ export function ResolutionFullTextModal({ meta, content, onClose }: Props) {
       onClick={onClose}
     >
       <div
+        ref={modalRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="resolution-modal-title"
         className="relative mx-4 flex max-h-[80vh] w-full max-w-2xl flex-col rounded-lg border border-[#30363d] bg-[#0d1117]"
         onClick={e => e.stopPropagation()}
       >
@@ -30,11 +38,12 @@ export function ResolutionFullTextModal({ meta, content, onClose }: Props) {
         <div className="flex items-start justify-between border-b border-[#30363d] px-5 py-4">
           <div>
             <p className="text-xs font-semibold text-[#58a6ff]">{meta.symbol}</p>
-            <p className="mt-0.5 text-sm font-medium leading-snug text-[#e6edf3]">{meta.title}</p>
+            <p id="resolution-modal-title" className="mt-0.5 text-sm font-medium leading-snug text-[#e6edf3]">{meta.title}</p>
           </div>
           <button
             onClick={onClose}
-            className="ml-4 mt-0.5 shrink-0 text-[#8b949e] transition-colors hover:text-[#e6edf3]"
+            aria-label="Close dialog"
+            className="ml-4 mt-0.5 shrink-0 text-[#9eaab6] transition-colors hover:text-[#e6edf3]"
           >
             ✕
           </button>

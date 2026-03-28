@@ -59,6 +59,7 @@ export function MapModeBar() {
       >
         <button
           onClick={handleUsChina}
+          aria-pressed={usChinaActive}
           style={{
             ...glassBase,
             background: usChinaActive ? 'rgba(56,189,248,0.18)' : 'rgba(0,0,0,0.42)',
@@ -71,6 +72,7 @@ export function MapModeBar() {
 
         <button
           onClick={handleCountry}
+          aria-pressed={countryActive}
           style={{
             ...glassBase,
             background: countryActive ? 'rgba(6,182,212,0.18)' : 'rgba(0,0,0,0.42)',

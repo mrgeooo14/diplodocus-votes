@@ -43,27 +43,30 @@ export function YearSlider() {
     <div className="flex items-center gap-3">
       <button
         onClick={togglePlay}
+        aria-label={playing ? 'Pause' : 'Play timeline'}
         title={playing ? 'Pause' : 'Play timeline'}
         className="flex h-6 w-6 items-center justify-center rounded-full bg-[#21262d] text-[#e6edf3] transition-colors hover:bg-[#30363d]"
       >
         {playing ? (
-          <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor">
+          <svg aria-hidden="true" width="10" height="10" viewBox="0 0 10 10" fill="currentColor">
             <rect x="1" y="1" width="3" height="8" rx="0.5" />
             <rect x="6" y="1" width="3" height="8" rx="0.5" />
           </svg>
         ) : (
-          <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor">
+          <svg aria-hidden="true" width="10" height="10" viewBox="0 0 10 10" fill="currentColor">
             <path d="M2 1.5l7 3.5-7 3.5V1.5z" />
           </svg>
         )}
       </button>
 
-      <span className="text-xs text-[#8b949e]">{MIN_YEAR}</span>
+      <span className="text-xs text-[#9eaab6]">{MIN_YEAR}</span>
       <input
         type="range"
         min={MIN_YEAR}
         max={MAX_YEAR}
         value={year}
+        aria-label="Year"
+        aria-valuetext={`Year ${year}`}
         onChange={e => setYear(Number(e.target.value))}
         className="h-1 w-40 cursor-pointer appearance-none rounded-full bg-[#30363d] accent-[#22c55e]"
       />

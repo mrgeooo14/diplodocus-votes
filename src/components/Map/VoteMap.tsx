@@ -145,7 +145,12 @@ export function VoteMap() {
   }), [hover?.featureId]);
 
   return (
-    <div className="relative h-full w-full">
+    <div
+      className="relative h-full w-full"
+      role="application"
+      aria-label="Interactive world map showing UN vote data by country. Use the dashboard panel on the right for an accessible data view."
+      aria-roledescription="map"
+    >
       <ReactMap
         ref={mapRef}
         mapStyle={MAP_STYLE}
@@ -182,8 +187,12 @@ export function VoteMap() {
       )}
 
       {loading && (
-        <div className="pointer-events-none absolute inset-0 flex items-end justify-center pb-4">
-          <span className="rounded-full bg-[#161b22]/80 px-3 py-1 text-xs text-[#8b949e]">
+        <div
+          role="status"
+          aria-live="polite"
+          className="pointer-events-none absolute inset-0 flex items-end justify-center pb-4"
+        >
+          <span className="rounded-full bg-[#161b22]/80 px-3 py-1 text-xs text-[#9eaab6]">
             Loading vote data…
           </span>
         </div>

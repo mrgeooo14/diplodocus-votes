@@ -16,7 +16,7 @@ export function FilterBar() {
 
   return (
     <>
-    <header className="flex items-center gap-4 border-b border-[#30363d] bg-[#161b22] px-4 py-2">
+    <header aria-label="Vote filters" className="flex items-center gap-4 border-b border-[#30363d] bg-[#161b22] px-4 py-2">
       <span className="text-sm font-bold tracking-wide text-[#e6edf3]">DiploDocus</span>
 
       <div className="h-4 w-px bg-[#30363d]" />
@@ -36,10 +36,11 @@ export function FilterBar() {
                 setResolutionPickerOpen(true);
               }
             }}
+            aria-pressed={mode === m.value}
             className={`rounded px-3 py-1 text-xs font-medium transition-colors ${
               mode === m.value
                 ? 'bg-[#21262d] text-[#e6edf3]'
-                : 'text-[#8b949e] hover:text-[#e6edf3]'
+                : 'text-[#9eaab6] hover:text-[#e6edf3]'
             }`}
           >
             {m.label}
@@ -54,7 +55,7 @@ export function FilterBar() {
         <>
           {topic ? (
             <>
-              <span className="text-xs text-[#8b949e]">Selected Topic:</span>
+              <span className="text-xs text-[#9eaab6]">Selected Topic:</span>
               <button
                 onClick={() => setTopicPickerOpen(true)}
                 className="text-xs text-[#58a6ff] transition-colors hover:text-[#e6edf3]"

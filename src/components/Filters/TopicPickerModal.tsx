@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useFocusTrap } from '../../hooks/useFocusTrap';
 import { useFilterStore } from '../../store/filterStore';
 import type { TopicsIndex, Body } from '../../lib/types';
 import { TOPIC_ICONS } from './TopicIcons';
@@ -58,6 +59,8 @@ export function TopicPickerModal() {
   const [animClass, setAnimClass] = useState('animate-fade-in');
   const [query, setQuery] = useState('');
   const searchRef = useRef<HTMLInputElement>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
+  useFocusTrap(modalRef);
 
   useEffect(() => {
     fetchJSON<TopicsIndex>('/data/aggregates/topics.json').then((data) => {
@@ -139,6 +142,10 @@ export function TopicPickerModal() {
       onMouseDown={() => setTopicPickerOpen(false)}
     >
       <div
+        ref={modalRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Select topic"
         className="flex flex-col rounded-xl border border-[#30363d] bg-[#161b22] shadow-2xl"
         style={{ width: 500, maxHeight: '82vh', boxShadow: '0 24px 56px rgba(0,0,0,0.7)' }}
         onMouseDown={e => e.stopPropagation()}
@@ -151,6 +158,7 @@ export function TopicPickerModal() {
           </svg>
           <input
             ref={searchRef}
+            aria-label="Search topics"
             value={query}
             onChange={e => setQuery(e.target.value)}
             placeholder="Search topics…"

@@ -6,7 +6,7 @@
   --color-bg-elevated: #21262d;
   --color-border: #30363d;
   --color-text-primary: #e6edf3;
-  --color-text-secondary: #8b949e;
+  --color-text-secondary: #9eaab6;
   --color-vote-yes: #22c55e;
   --color-vote-no: #ef4444;
   --color-vote-abstain: #eab308;
@@ -30,6 +30,11 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+:focus-visible {
+  outline: 2px solid #388bfd;
+  outline-offset: 2px;
+}
+
 @keyframes slide-in-right {
   from { transform: translateX(36px); opacity: 0; }
   to   { transform: translateX(0);    opacity: 1; }
@@ -45,3 +50,11 @@ body {
 .animate-slide-in-right { animation: slide-in-right 220ms ease-out both; }
 .animate-slide-in-left  { animation: slide-in-left  220ms ease-out both; }
 .animate-fade-in        { animation: fade-in        180ms ease-out both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-slide-in-right,
+  .animate-slide-in-left,
+  .animate-fade-in {
+    animation: none;
+  }
+}

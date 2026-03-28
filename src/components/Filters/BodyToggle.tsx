@@ -22,10 +22,11 @@ export function BodyToggle() {
           key={opt.value}
           onClick={() => handleSelect(opt.value)}
           title={opt.label}
+          aria-pressed={body === opt.value}
           className={`rounded px-3 py-1 text-xs font-medium transition-colors ${
             body === opt.value
               ? 'bg-[#21262d] text-[#e6edf3]'
-              : 'text-[#8b949e] hover:text-[#e6edf3]'
+              : 'text-[#9eaab6] hover:text-[#e6edf3]'
           }`}
         >
           {opt.title}

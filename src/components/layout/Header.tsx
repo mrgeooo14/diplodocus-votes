@@ -14,7 +14,7 @@ export function Header() {
         </span>
       </NavLink>
 
-      <nav className="flex items-center gap-1 ml-auto">
+      <nav aria-label="Main navigation" className="flex items-center gap-1 ml-auto">
         <NavLink
           to="/"
           end

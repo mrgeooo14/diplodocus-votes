@@ -1,8 +1,9 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { ISO3_TO_ISO2, iso3ToName } from '../../lib/countryIso';
 import { G20_MEMBERS } from '../../lib/groupAlignment';
 import { CountryFlag } from '../CountryFlag';
 import { useFilterStore } from '../../store/filterStore';
+import { useFocusTrap } from '../../hooks/useFocusTrap';
 
 interface CountryPickerModalProps {
   onSelect: (iso3: string) => void;
@@ -50,6 +51,8 @@ function CountryRow({
 export function CountryPickerModal({ onSelect, onClose }: CountryPickerModalProps) {
   const { compareCountry } = useFilterStore();
   const [query, setQuery] = useState('');
+  const modalRef = useRef<HTMLDivElement>(null);
+  useFocusTrap(modalRef);
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
@@ -90,6 +93,10 @@ export function CountryPickerModal({ onSelect, onClose }: CountryPickerModalProp
       onClick={onClose}
     >
       <div
+        ref={modalRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="country-picker-title"
         style={{
           background: '#161b22',
           border: '1px solid #30363d',
@@ -114,22 +121,24 @@ export function CountryPickerModal({ onSelect, onClose }: CountryPickerModalProp
           }}
         >
           <p
+            id="country-picker-title"
             style={{
               fontSize: 12,
               fontWeight: 600,
               textTransform: 'uppercase',
               letterSpacing: '0.08em',
-              color: '#8b949e',
+              color: '#9eaab6',
             }}
           >
             Compare to Country
           </p>
           <button
             onClick={onClose}
+            aria-label="Close"
             style={{
               background: 'none',
               border: 'none',
-              color: '#8b949e',
+              color: '#9eaab6',
               cursor: 'pointer',
               fontSize: 18,
               lineHeight: 1,
@@ -144,6 +153,7 @@ export function CountryPickerModal({ onSelect, onClose }: CountryPickerModalProp
         <div style={{ padding: '10px 20px 8px', flexShrink: 0 }}>
           <input
             autoFocus
+            aria-label="Search countries"
             placeholder="Search countries…"
             value={query}
             onChange={e => setQuery(e.target.value)}
@@ -155,7 +165,6 @@ export function CountryPickerModal({ onSelect, onClose }: CountryPickerModalProp
               padding: '6px 10px',
               fontSize: 12,
               color: '#e6edf3',
-              outline: 'none',
               boxSizing: 'border-box',
             }}
           />

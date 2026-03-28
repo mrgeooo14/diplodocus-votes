@@ -209,10 +209,14 @@ export function useVoteData(): VoteDataResult {
         if (relevant.length > 0) {
           if (mapColorMode === 'us-china') {
             const { colors: overrides, stats } = computeUsVsChinaColors(relevant);
+            // Wipe default vote/yesRate colors — comparison mode owns the full palette.
+            // Without this, countries where USA+China agreed keep their green/yellow colors.
+            for (const k of Object.keys(colors)) delete colors[k];
             Object.assign(colors, overrides);
             comparisonStats = stats;
           } else if (compareCountry) {
             const { colors: overrides, stats } = computeCountryComparisonColors(relevant, compareCountry);
+            for (const k of Object.keys(colors)) delete colors[k];
             Object.assign(colors, overrides);
             comparisonStats = stats;
           }

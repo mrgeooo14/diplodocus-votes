@@ -39,6 +39,8 @@ export const CountryTooltip = forwardRef<HTMLDivElement, Props>(function Country
   return (
     <div
       ref={ref}
+      role="tooltip"
+      aria-live="polite"
       className="pointer-events-none absolute z-50 rounded border border-[#30363d] bg-[#161b22] px-3 py-2 text-sm shadow-lg"
       style={{ left: x + 14, top: y - 10 }}
     >
